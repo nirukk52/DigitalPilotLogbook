@@ -1,48 +1,112 @@
 "use client";
 
-import { useState } from "react";
-import { AuthoritySelector } from "@/components/onboarding/AuthoritySelector";
+import { useState, useEffect, useTransition } from "react";
 import { OnboardingSettings } from "@/components/onboarding/OnboardingSettings";
+import { OnboardingStep2 } from "@/components/onboarding/OnboardingStep2";
+import {
+  loadOnboardingData,
+  updateOnboardingSettings,
+  updateOnboardingProgress,
+  type OnboardingFormData,
+} from "./actions";
 
 /**
  * Multi-step onboarding flow for new users to configure their logbook
  * Handles aviation authority selection, duration format, timezone, and other initial settings
+ * Persists data in Neon Postgres database
  */
 export default function OnboardingPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isPending, startTransition] = useTransition();
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<OnboardingFormData>({
     authority: "FAA",
     authorityName: "Federal Aviation Administration - USA",
     decimalFormat: true,
     timezone: "UTC",
   });
 
+  // Load saved data on mount
+  useEffect(() => {
+    loadOnboardingData().then((data) => {
+      if (data.settings) {
+        setFormData(data.settings);
+      }
+      if (data.progress && !data.progress.isCompleted) {
+        setCurrentStep(data.progress.currentStep);
+      }
+      setIsLoading(false);
+    });
+  }, []);
+
   const handleContinue = () => {
     if (currentStep < 8) {
-      setCurrentStep(currentStep + 1);
+      const nextStep = currentStep + 1;
+      setCurrentStep(nextStep);
+
+      // Save progress
+      startTransition(() => {
+        updateOnboardingProgress(nextStep, false);
+      });
     } else {
       // Complete onboarding
       console.log("Onboarding complete:", formData);
-      // TODO: Save settings and redirect to dashboard
+
+      startTransition(() => {
+        updateOnboardingProgress(8, true);
+      });
+
+      // TODO: Redirect to dashboard
     }
   };
 
-  const updateFormData = (updates: Partial<typeof formData>) => {
-    setFormData({ ...formData, ...updates });
+  const handleBack = () => {
+    if (currentStep > 0) {
+      const prevStep = currentStep - 1;
+      setCurrentStep(prevStep);
+
+      // Save progress
+      startTransition(() => {
+        updateOnboardingProgress(prevStep, false);
+      });
+    }
+  };
+
+  const updateFormData = (updates: Partial<OnboardingFormData>) => {
+    const newFormData = { ...formData, ...updates };
+    setFormData(newFormData);
+
+    // Save to database
+    startTransition(() => {
+      updateOnboardingSettings(newFormData);
+    });
   };
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
-      {currentStep === 0 && (
-        <OnboardingSettings
-          formData={formData}
-          updateFormData={updateFormData}
-          onContinue={handleContinue}
-          currentStep={currentStep}
-          totalSteps={9}
-        />
+      {isLoading ? (
+        <div className="text-white">Loading...</div>
+      ) : (
+        <>
+          {currentStep === 0 && (
+            <OnboardingSettings
+              formData={formData}
+              updateFormData={updateFormData}
+              onContinue={handleContinue}
+              currentStep={currentStep}
+              totalSteps={9}
+            />
+          )}
+          {currentStep === 1 && (
+            <OnboardingStep2
+              onContinue={handleContinue}
+              onBack={handleBack}
+              currentStep={currentStep}
+              totalSteps={9}
+            />
+          )}
+        </>
       )}
-      {/* Additional steps will be rendered here */}
     </div>
   );
 }
