@@ -7,6 +7,8 @@
 import {
   getUserSettings,
   saveUserSettings,
+  getPersonalizationSettings,
+  savePersonalizationSettings,
   getOnboardingProgress,
   saveOnboardingProgress,
 } from "@/lib/db/queries";
@@ -18,15 +20,24 @@ export interface OnboardingFormData {
   timezone: string;
 }
 
+export interface PersonalizationFormData {
+  language: string;
+  languageName: string;
+  primaryColor: string;
+  appearance: string;
+}
+
 /**
  * Load saved onboarding data from database
  */
 export async function loadOnboardingData(): Promise<{
   settings: OnboardingFormData | null;
+  personalization: PersonalizationFormData | null;
   progress: { currentStep: number; isCompleted: boolean } | null;
 }> {
-  const [settings, progress] = await Promise.all([
+  const [settings, personalization, progress] = await Promise.all([
     getUserSettings(),
+    getPersonalizationSettings(),
     getOnboardingProgress(),
   ]);
 
@@ -37,6 +48,14 @@ export async function loadOnboardingData(): Promise<{
           authorityName: settings.authorityName,
           decimalFormat: settings.decimalFormat,
           timezone: settings.timezone,
+        }
+      : null,
+    personalization: personalization
+      ? {
+          language: personalization.language,
+          languageName: personalization.languageName,
+          primaryColor: personalization.primaryColor,
+          appearance: personalization.appearance,
         }
       : null,
     progress: progress
@@ -55,6 +74,15 @@ export async function updateOnboardingSettings(
   settings: OnboardingFormData
 ): Promise<void> {
   await saveUserSettings(settings);
+}
+
+/**
+ * Save personalization settings to database
+ */
+export async function updatePersonalizationSettings(
+  settings: PersonalizationFormData
+): Promise<void> {
+  await savePersonalizationSettings(settings);
 }
 
 /**

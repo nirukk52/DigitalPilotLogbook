@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { OnboardingSettings } from "@/components/onboarding/OnboardingSettings";
-import { OnboardingStep2 } from "@/components/onboarding/OnboardingStep2";
+import { OnboardingStep2, type PersonalizationData } from "@/components/onboarding/OnboardingStep2";
 import {
   loadOnboardingData,
   updateOnboardingSettings,
+  updatePersonalizationSettings,
   updateOnboardingProgress,
   type OnboardingFormData,
 } from "./actions";
@@ -25,12 +26,21 @@ export default function OnboardingPage() {
     decimalFormat: true,
     timezone: "UTC",
   });
+  const [personalizationData, setPersonalizationData] = useState<PersonalizationData>({
+    language: "en-GB",
+    languageName: "English (UK)",
+    primaryColor: "#9333ea",
+    appearance: "dark",
+  });
 
   // Load saved data on mount
   useEffect(() => {
     loadOnboardingData().then((data) => {
       if (data.settings) {
         setFormData(data.settings);
+      }
+      if (data.personalization) {
+        setPersonalizationData(data.personalization);
       }
       if (data.progress && !data.progress.isCompleted) {
         setCurrentStep(data.progress.currentStep);
@@ -82,6 +92,16 @@ export default function OnboardingPage() {
     });
   };
 
+  const updatePersonalization = (updates: Partial<PersonalizationData>) => {
+    const newData = { ...personalizationData, ...updates };
+    setPersonalizationData(newData);
+
+    // Save to database
+    startTransition(() => {
+      updatePersonalizationSettings(newData);
+    });
+  };
+
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4">
       {isLoading ? (
@@ -99,6 +119,8 @@ export default function OnboardingPage() {
           )}
           {currentStep === 1 && (
             <OnboardingStep2
+              formData={personalizationData}
+              updateFormData={updatePersonalization}
               onContinue={handleContinue}
               onBack={handleBack}
               currentStep={currentStep}

@@ -56,8 +56,25 @@ export const onboardingProgress = pgTable("onboarding_progress", {
   isCompleted: boolean("is_completed").notNull().default(false),
 });
 
+/**
+ * Personalization settings table - stores user UI preferences
+ * Language, color scheme, and appearance mode preferences
+ */
+export const personalizationSettings = pgTable("personalization_settings", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull().default("default").unique(),
+  language: text("language").notNull().default("en-GB"),
+  languageName: text("language_name").notNull().default("English (UK)"),
+  primaryColor: text("primary_color").notNull().default("#9333ea"),
+  appearance: text("appearance").notNull().default("dark"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 // Type exports for use in application code
 export type UserSettings = typeof userSettings.$inferSelect;
 export type NewUserSettings = typeof userSettings.$inferInsert;
 export type OnboardingProgress = typeof onboardingProgress.$inferSelect;
 export type NewOnboardingProgress = typeof onboardingProgress.$inferInsert;
+export type PersonalizationSettings = typeof personalizationSettings.$inferSelect;
+export type NewPersonalizationSettings = typeof personalizationSettings.$inferInsert;

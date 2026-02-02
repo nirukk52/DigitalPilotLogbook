@@ -8,8 +8,10 @@ import {
   userSettings,
   userSettingsLog,
   onboardingProgress,
+  personalizationSettings,
   type UserSettings,
   type OnboardingProgress,
+  type PersonalizationSettings,
 } from "./schema";
 
 /**
@@ -179,6 +181,68 @@ export async function saveOnboardingProgress(
         startedAt: new Date(),
         isCompleted: progress.isCompleted,
         completedAt: progress.completedAt || null,
+      })
+      .returning();
+
+    return inserted;
+  }
+}
+
+/**
+ * Get personalization settings for a user
+ */
+export async function getPersonalizationSettings(
+  userId: string = "default"
+): Promise<PersonalizationSettings | null> {
+  const result = await db
+    .select()
+    .from(personalizationSettings)
+    .where(eq(personalizationSettings.userId, userId))
+    .limit(1);
+
+  return result[0] || null;
+}
+
+/**
+ * Save personalization settings (upsert)
+ */
+export async function savePersonalizationSettings(
+  settings: {
+    language: string;
+    languageName: string;
+    primaryColor: string;
+    appearance: string;
+  },
+  userId: string = "default"
+): Promise<PersonalizationSettings> {
+  const existing = await getPersonalizationSettings(userId);
+  const now = new Date();
+
+  if (existing) {
+    const [updated] = await db
+      .update(personalizationSettings)
+      .set({
+        language: settings.language,
+        languageName: settings.languageName,
+        primaryColor: settings.primaryColor,
+        appearance: settings.appearance,
+        updatedAt: now,
+      })
+      .where(eq(personalizationSettings.userId, userId))
+      .returning();
+
+    return updated;
+  } else {
+    const [inserted] = await db
+      .insert(personalizationSettings)
+      .values({
+        userId,
+        language: settings.language,
+        languageName: settings.languageName,
+        primaryColor: settings.primaryColor,
+        appearance: settings.appearance,
+        createdAt: now,
+        updatedAt: now,
       })
       .returning();
 

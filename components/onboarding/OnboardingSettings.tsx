@@ -29,8 +29,16 @@ export function OnboardingSettings({
 }: OnboardingSettingsProps) {
   const [showAuthoritySelector, setShowAuthoritySelector] = useState(false);
 
+  /**
+   * Authorities that use decimal duration format (e.g., 1.5 hours)
+   * FAA and most non-European authorities prefer decimal format
+   * EASA and UKCAA use hours:minutes format (hh:mm)
+   */
+  const decimalFormatAuthorities = ["FAA", "TCCA", "CASA", "NZCAA"];
+
   const handleAuthoritySelect = (code: string, name: string) => {
-    updateFormData({ authority: code, authorityName: name });
+    const shouldUseDecimal = decimalFormatAuthorities.includes(code);
+    updateFormData({ authority: code, authorityName: name, decimalFormat: shouldUseDecimal });
     setShowAuthoritySelector(false);
   };
 
