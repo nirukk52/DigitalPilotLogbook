@@ -71,6 +71,44 @@ export const personalizationSettings = pgTable("personalization_settings", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+/**
+ * Licences and ratings table - stores pilot certifications
+ * Follows guideline: Certificates & Expirations pattern
+ * Tracks validity, flight time limits, and recency requirements
+ */
+export const licences = pgTable("licences", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull().default("default"),
+  
+  // Licence identification
+  licenceType: text("licence_type").notNull(), // e.g., "CLASS_RATING", "FLIGHT_CREW_LICENCE", "MEDICAL", "RADIO"
+  licenceCategory: text("licence_category").notNull(), // e.g., "SEP LAND", "PPL A", "CLASS 2"
+  authority: text("authority").notNull(), // e.g., "EASA", "FAA", "ICAO"
+  licenceNumber: text("licence_number"), // e.g., "D:FCL.PPL(A)112233"
+  
+  // Validity dates
+  dateOfIssue: timestamp("date_of_issue"),
+  validUntil: timestamp("valid_until"),
+  
+  // Requirements and restrictions
+  totalHours: integer("total_hours"), // e.g., 1200 hours as 1200 minutes
+  totalLandings: integer("total_landings"), // e.g., 12 landings
+  picHours: integer("pic_hours"), // e.g., 600 hours as PIC (14:26 format)
+  instructorHours: integer("instructor_hours"), // e.g., 100 hours with FI
+  
+  // Recency requirements
+  recencyMonths: integer("recency_months"), // e.g., 12 months validity required
+  recencyStartDate: timestamp("recency_start_date"), // e.g., last 12 months from Oct 2024
+  recencyEndDate: timestamp("recency_end_date"), // e.g., to 31 Oct 2025
+  
+  // Status
+  isActive: boolean("is_active").notNull().default(true),
+  
+  // Audit trail
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 // Type exports for use in application code
 export type UserSettings = typeof userSettings.$inferSelect;
 export type NewUserSettings = typeof userSettings.$inferInsert;
@@ -78,3 +116,5 @@ export type OnboardingProgress = typeof onboardingProgress.$inferSelect;
 export type NewOnboardingProgress = typeof onboardingProgress.$inferInsert;
 export type PersonalizationSettings = typeof personalizationSettings.$inferSelect;
 export type NewPersonalizationSettings = typeof personalizationSettings.$inferInsert;
+export type Licence = typeof licences.$inferSelect;
+export type NewLicence = typeof licences.$inferInsert;

@@ -11,7 +11,11 @@ import {
   savePersonalizationSettings,
   getOnboardingProgress,
   saveOnboardingProgress,
+  getLicences,
+  saveLicence,
+  deleteLicence,
 } from "@/lib/db/queries";
+import type { Licence } from "@/lib/db/schema";
 
 export interface OnboardingFormData {
   authority: string;
@@ -94,8 +98,71 @@ export async function updateOnboardingProgress(
 ): Promise<void> {
   await saveOnboardingProgress({
     currentStep,
-    totalSteps: 9,
+    totalSteps: 7,
     isCompleted,
     completedAt: isCompleted ? new Date() : undefined,
   });
+}
+
+/**
+ * Load licences for the user
+ */
+export async function loadLicences(): Promise<Licence[]> {
+  return await getLicences();
+}
+
+/**
+ * Helper function to parse time in HH:MM format to minutes
+ */
+function parseTimeToMinutes(timeStr: string): number | null {
+  if (!timeStr) return null;
+  const parts = timeStr.split(":");
+  if (parts.length !== 2) return null;
+  const hours = parseInt(parts[0], 10);
+  const minutes = parseInt(parts[1], 10);
+  if (isNaN(hours) || isNaN(minutes)) return null;
+  return hours * 60 + minutes;
+}
+
+/**
+ * Add a new licence
+ */
+export async function addLicence(data: {
+  licenceType: string;
+  licenceCategory: string;
+  authority: string;
+  licenceNumber: string;
+  dateOfIssue: string;
+  validUntil: string;
+  totalHours: string;
+  totalLandings: string;
+  picHours: string;
+  instructorHours: string;
+  recencyMonths: string;
+  recencyStartDate: string;
+  recencyEndDate: string;
+}): Promise<Licence> {
+  return await saveLicence({
+    licenceType: data.licenceType,
+    licenceCategory: data.licenceCategory,
+    authority: data.authority,
+    licenceNumber: data.licenceNumber || null,
+    dateOfIssue: data.dateOfIssue ? new Date(data.dateOfIssue) : null,
+    validUntil: data.validUntil ? new Date(data.validUntil) : null,
+    totalHours: parseTimeToMinutes(data.totalHours),
+    totalLandings: data.totalLandings ? parseInt(data.totalLandings, 10) : null,
+    picHours: parseTimeToMinutes(data.picHours),
+    instructorHours: parseTimeToMinutes(data.instructorHours),
+    recencyMonths: data.recencyMonths ? parseInt(data.recencyMonths, 10) : null,
+    recencyStartDate: data.recencyStartDate ? new Date(data.recencyStartDate) : null,
+    recencyEndDate: data.recencyEndDate ? new Date(data.recencyEndDate) : null,
+    isActive: true,
+  });
+}
+
+/**
+ * Remove a licence
+ */
+export async function removeLicence(licenceId: number): Promise<void> {
+  await deleteLicence(licenceId);
 }

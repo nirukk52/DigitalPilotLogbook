@@ -9,9 +9,12 @@ import {
   userSettingsLog,
   onboardingProgress,
   personalizationSettings,
+  licences,
   type UserSettings,
   type OnboardingProgress,
   type PersonalizationSettings,
+  type Licence,
+  type NewLicence,
 } from "./schema";
 
 /**
@@ -248,4 +251,75 @@ export async function savePersonalizationSettings(
 
     return inserted;
   }
+}
+
+/**
+ * Get all licences for a user
+ */
+export async function getLicences(
+  userId: string = "default"
+): Promise<Licence[]> {
+  const result = await db
+    .select()
+    .from(licences)
+    .where(eq(licences.userId, userId))
+    .orderBy(desc(licences.createdAt));
+
+  return result;
+}
+
+/**
+ * Save a new licence
+ */
+export async function saveLicence(
+  licence: Omit<NewLicence, "userId" | "createdAt" | "updatedAt">,
+  userId: string = "default"
+): Promise<Licence> {
+  const now = new Date();
+
+  const [inserted] = await db
+    .insert(licences)
+    .values({
+      ...licence,
+      userId,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .returning();
+
+  return inserted;
+}
+
+/**
+ * Update an existing licence
+ */
+export async function updateLicence(
+  licenceId: number,
+  updates: Partial<Omit<NewLicence, "userId" | "createdAt">>,
+  userId: string = "default"
+): Promise<Licence> {
+  const now = new Date();
+
+  const [updated] = await db
+    .update(licences)
+    .set({
+      ...updates,
+      updatedAt: now,
+    })
+    .where(eq(licences.id, licenceId))
+    .returning();
+
+  return updated;
+}
+
+/**
+ * Delete a licence
+ */
+export async function deleteLicence(
+  licenceId: number,
+  userId: string = "default"
+): Promise<void> {
+  await db
+    .delete(licences)
+    .where(eq(licences.id, licenceId));
 }

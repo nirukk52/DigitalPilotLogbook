@@ -1,0 +1,20 @@
+CREATE TABLE "licences" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" text DEFAULT 'default' NOT NULL,
+	"licence_type" text NOT NULL,
+	"licence_category" text NOT NULL,
+	"authority" text NOT NULL,
+	"licence_number" text,
+	"date_of_issue" timestamp,
+	"valid_until" timestamp,
+	"total_hours" integer,
+	"total_landings" integer,
+	"pic_hours" integer,
+	"instructor_hours" integer,
+	"recency_months" integer,
+	"recency_start_date" timestamp,
+	"recency_end_date" timestamp,
+	"is_active" boolean DEFAULT true NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
