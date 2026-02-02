@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getOnboardingProgress } from "@/lib/db/queries";
+import { getSessionUserId } from "@/lib/session";
 
 /**
  * Root route - auto-detects user state and redirects appropriately
@@ -8,7 +9,8 @@ import { getOnboardingProgress } from "@/lib/db/queries";
  * - Onboarding completed -> App overview page
  */
 export default async function Home() {
-  const progress = await getOnboardingProgress("default");
+  const userId = await getSessionUserId();
+  const progress = await getOnboardingProgress(userId);
 
   if (!progress) {
     // New user - show landing page

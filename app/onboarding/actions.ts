@@ -15,6 +15,7 @@ import {
   saveLicence,
   deleteLicence,
 } from "@/lib/db/queries";
+import { getSessionUserId } from "@/lib/session";
 import type { Licence } from "@/lib/db/schema";
 
 export interface OnboardingFormData {
@@ -39,10 +40,11 @@ export async function loadOnboardingData(): Promise<{
   personalization: PersonalizationFormData | null;
   progress: { currentStep: number; isCompleted: boolean } | null;
 }> {
+  const userId = await getSessionUserId();
   const [settings, personalization, progress] = await Promise.all([
-    getUserSettings(),
-    getPersonalizationSettings(),
-    getOnboardingProgress(),
+    getUserSettings(userId),
+    getPersonalizationSettings(userId),
+    getOnboardingProgress(userId),
   ]);
 
   return {
@@ -77,7 +79,8 @@ export async function loadOnboardingData(): Promise<{
 export async function updateOnboardingSettings(
   settings: OnboardingFormData
 ): Promise<void> {
-  await saveUserSettings(settings);
+  const userId = await getSessionUserId();
+  await saveUserSettings(settings, userId);
 }
 
 /**
@@ -86,7 +89,8 @@ export async function updateOnboardingSettings(
 export async function updatePersonalizationSettings(
   settings: PersonalizationFormData
 ): Promise<void> {
-  await savePersonalizationSettings(settings);
+  const userId = await getSessionUserId();
+  await savePersonalizationSettings(settings, userId);
 }
 
 /**
@@ -96,19 +100,21 @@ export async function updateOnboardingProgress(
   currentStep: number,
   isCompleted: boolean = false
 ): Promise<void> {
+  const userId = await getSessionUserId();
   await saveOnboardingProgress({
     currentStep,
     totalSteps: 7,
     isCompleted,
     completedAt: isCompleted ? new Date() : undefined,
-  });
+  }, userId);
 }
 
 /**
  * Load licences for the user
  */
 export async function loadLicences(): Promise<Licence[]> {
-  return await getLicences();
+  const userId = await getSessionUserId();
+  return await getLicences(userId);
 }
 
 /**
@@ -142,6 +148,7 @@ export async function addLicence(data: {
   recencyStartDate: string;
   recencyEndDate: string;
 }): Promise<Licence> {
+  const userId = await getSessionUserId();
   return await saveLicence({
     licenceType: data.licenceType,
     licenceCategory: data.licenceCategory,
@@ -157,12 +164,13 @@ export async function addLicence(data: {
     recencyStartDate: data.recencyStartDate ? new Date(data.recencyStartDate) : null,
     recencyEndDate: data.recencyEndDate ? new Date(data.recencyEndDate) : null,
     isActive: true,
-  });
+  }, userId);
 }
 
 /**
  * Remove a licence
  */
 export async function removeLicence(licenceId: number): Promise<void> {
-  await deleteLicence(licenceId);
+  const userId = await getSessionUserId();
+  await deleteLicence(licenceId, userId);
 }
