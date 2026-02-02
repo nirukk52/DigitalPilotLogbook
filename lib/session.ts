@@ -1,43 +1,26 @@
 /**
- * Session management for anonymous users
- * Creates a unique userId per browser session stored in cookies
- * This allows each visitor to have their own onboarding state
+ * Session management for anonymous users - READ ONLY
+ * Cookie creation is handled by middleware.ts
+ * This module only reads the session cookie
  */
 import { cookies } from "next/headers";
-import { v4 as uuidv4 } from "uuid";
 
 const SESSION_COOKIE_NAME = "pilot_logbook_session";
-const SESSION_MAX_AGE = 60 * 60 * 24 * 365; // 1 year in seconds
 
 /**
- * Get existing session userId from cookies (read-only)
- * Returns null if no session exists - use in Server Components
+ * Get the session userId from cookies (read-only)
+ * The session is guaranteed to exist because middleware creates it
+ * Returns the userId string, or null if somehow missing
  */
 export async function getSessionUserId(): Promise<string | null> {
   const cookieStore = await cookies();
-  const existingSession = cookieStore.get(SESSION_COOKIE_NAME);
-  return existingSession?.value || null;
+  const session = cookieStore.get(SESSION_COOKIE_NAME);
+  return session?.value || null;
 }
 
 /**
- * Create a new session and return the userId
- * Must be called from a Server Action or Route Handler
- */
-export async function createSession(): Promise<string> {
-  const cookieStore = await cookies();
-  const newUserId = uuidv4();
-  cookieStore.set(SESSION_COOKIE_NAME, newUserId, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: SESSION_MAX_AGE,
-    path: "/",
-  });
-  return newUserId;
-}
-
-/**
- * Clear the session (useful for testing or logout)
+ * Clear the session cookie (for testing/logout purposes)
+ * Note: This should only be called from Server Actions or Route Handlers
  */
 export async function clearSession(): Promise<void> {
   const cookieStore = await cookies();

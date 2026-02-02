@@ -3,6 +3,7 @@
 /**
  * Server actions for onboarding flow
  * Handles database operations for user settings and progress
+ * Session is guaranteed to exist (created by middleware)
  */
 import {
   getUserSettings,
@@ -15,18 +16,8 @@ import {
   saveLicence,
   deleteLicence,
 } from "@/lib/db/queries";
-import { getSessionUserId, createSession } from "@/lib/session";
+import { getSessionUserId } from "@/lib/session";
 import type { Licence } from "@/lib/db/schema";
-
-/**
- * Get or create a session userId
- * Called from Server Actions where cookie modification is allowed
- */
-async function getOrCreateUserId(): Promise<string> {
-  const existingId = await getSessionUserId();
-  if (existingId) return existingId;
-  return await createSession();
-}
 
 export interface OnboardingFormData {
   authority: string;
@@ -43,6 +34,17 @@ export interface PersonalizationFormData {
 }
 
 /**
+ * Get userId with fallback - session should always exist from middleware
+ */
+async function getUserId(): Promise<string> {
+  const userId = await getSessionUserId();
+  if (!userId) {
+    throw new Error("Session not found - middleware should have created it");
+  }
+  return userId;
+}
+
+/**
  * Load saved onboarding data from database
  */
 export async function loadOnboardingData(): Promise<{
@@ -50,7 +52,7 @@ export async function loadOnboardingData(): Promise<{
   personalization: PersonalizationFormData | null;
   progress: { currentStep: number; isCompleted: boolean } | null;
 }> {
-  const userId = await getOrCreateUserId();
+  const userId = await getUserId();
   const [settings, personalization, progress] = await Promise.all([
     getUserSettings(userId),
     getPersonalizationSettings(userId),
@@ -89,7 +91,7 @@ export async function loadOnboardingData(): Promise<{
 export async function updateOnboardingSettings(
   settings: OnboardingFormData
 ): Promise<void> {
-  const userId = await getOrCreateUserId();
+  const userId = await getUserId();
   await saveUserSettings(settings, userId);
 }
 
@@ -99,7 +101,7 @@ export async function updateOnboardingSettings(
 export async function updatePersonalizationSettings(
   settings: PersonalizationFormData
 ): Promise<void> {
-  const userId = await getOrCreateUserId();
+  const userId = await getUserId();
   await savePersonalizationSettings(settings, userId);
 }
 
@@ -110,20 +112,23 @@ export async function updateOnboardingProgress(
   currentStep: number,
   isCompleted: boolean = false
 ): Promise<void> {
-  const userId = await getOrCreateUserId();
-  await saveOnboardingProgress({
-    currentStep,
-    totalSteps: 7,
-    isCompleted,
-    completedAt: isCompleted ? new Date() : undefined,
-  }, userId);
+  const userId = await getUserId();
+  await saveOnboardingProgress(
+    {
+      currentStep,
+      totalSteps: 7,
+      isCompleted,
+      completedAt: isCompleted ? new Date() : undefined,
+    },
+    userId
+  );
 }
 
 /**
  * Load licences for the user
  */
 export async function loadLicences(): Promise<Licence[]> {
-  const userId = await getOrCreateUserId();
+  const userId = await getUserId();
   return await getLicences(userId);
 }
 
@@ -158,29 +163,40 @@ export async function addLicence(data: {
   recencyStartDate: string;
   recencyEndDate: string;
 }): Promise<Licence> {
-  const userId = await getOrCreateUserId();
-  return await saveLicence({
-    licenceType: data.licenceType,
-    licenceCategory: data.licenceCategory,
-    authority: data.authority,
-    licenceNumber: data.licenceNumber || null,
-    dateOfIssue: data.dateOfIssue ? new Date(data.dateOfIssue) : null,
-    validUntil: data.validUntil ? new Date(data.validUntil) : null,
-    totalHours: parseTimeToMinutes(data.totalHours),
-    totalLandings: data.totalLandings ? parseInt(data.totalLandings, 10) : null,
-    picHours: parseTimeToMinutes(data.picHours),
-    instructorHours: parseTimeToMinutes(data.instructorHours),
-    recencyMonths: data.recencyMonths ? parseInt(data.recencyMonths, 10) : null,
-    recencyStartDate: data.recencyStartDate ? new Date(data.recencyStartDate) : null,
-    recencyEndDate: data.recencyEndDate ? new Date(data.recencyEndDate) : null,
-    isActive: true,
-  }, userId);
+  const userId = await getUserId();
+  return await saveLicence(
+    {
+      licenceType: data.licenceType,
+      licenceCategory: data.licenceCategory,
+      authority: data.authority,
+      licenceNumber: data.licenceNumber || null,
+      dateOfIssue: data.dateOfIssue ? new Date(data.dateOfIssue) : null,
+      validUntil: data.validUntil ? new Date(data.validUntil) : null,
+      totalHours: parseTimeToMinutes(data.totalHours),
+      totalLandings: data.totalLandings
+        ? parseInt(data.totalLandings, 10)
+        : null,
+      picHours: parseTimeToMinutes(data.picHours),
+      instructorHours: parseTimeToMinutes(data.instructorHours),
+      recencyMonths: data.recencyMonths
+        ? parseInt(data.recencyMonths, 10)
+        : null,
+      recencyStartDate: data.recencyStartDate
+        ? new Date(data.recencyStartDate)
+        : null,
+      recencyEndDate: data.recencyEndDate
+        ? new Date(data.recencyEndDate)
+        : null,
+      isActive: true,
+    },
+    userId
+  );
 }
 
 /**
  * Remove a licence
  */
 export async function removeLicence(licenceId: number): Promise<void> {
-  const userId = await getOrCreateUserId();
+  const userId = await getUserId();
   await deleteLicence(licenceId, userId);
 }
