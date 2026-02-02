@@ -47,26 +47,32 @@ export default function OnboardingPage() {
 
   // Load saved data on mount
   useEffect(() => {
-    Promise.all([loadOnboardingData(), loadLicences()]).then(([data, licencesData]) => {
-      if (data.settings) {
-        setFormData(data.settings);
-      }
-      if (data.personalization) {
-        setPersonalizationData(data.personalization);
-      }
-      if (data.progress) {
-        if (data.progress.isCompleted) {
-          // Already completed, redirect to app
-          router.push("/overview");
-          return;
+    Promise.all([loadOnboardingData(), loadLicences()])
+      .then(([data, licencesData]) => {
+        if (data.settings) {
+          setFormData(data.settings);
         }
-        // Clamp step to valid range (0-6)
-        const validStep = Math.min(Math.max(data.progress.currentStep, 0), 6);
-        setCurrentStep(validStep);
-      }
-      setLicences(licencesData);
-      setIsLoading(false);
-    });
+        if (data.personalization) {
+          setPersonalizationData(data.personalization);
+        }
+        if (data.progress) {
+          if (data.progress.isCompleted) {
+            // Already completed, redirect to app
+            router.push("/overview");
+            return;
+          }
+          // Clamp step to valid range (0-6)
+          const validStep = Math.min(Math.max(data.progress.currentStep, 0), 6);
+          setCurrentStep(validStep);
+        }
+        setLicences(licencesData);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Failed to load onboarding data:", error);
+        // Still show the form with defaults on error
+        setIsLoading(false);
+      });
   }, [router]);
 
   const handleContinue = () => {
