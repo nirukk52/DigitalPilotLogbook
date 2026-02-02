@@ -10,18 +10,21 @@ const SESSION_COOKIE_NAME = "pilot_logbook_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 365; // 1 year in seconds
 
 /**
- * Get or create a session userId from cookies
- * Returns unique userId for this browser session
+ * Get existing session userId from cookies (read-only)
+ * Returns null if no session exists - use in Server Components
  */
-export async function getSessionUserId(): Promise<string> {
+export async function getSessionUserId(): Promise<string | null> {
   const cookieStore = await cookies();
   const existingSession = cookieStore.get(SESSION_COOKIE_NAME);
+  return existingSession?.value || null;
+}
 
-  if (existingSession?.value) {
-    return existingSession.value;
-  }
-
-  // Create new session
+/**
+ * Create a new session and return the userId
+ * Must be called from a Server Action or Route Handler
+ */
+export async function createSession(): Promise<string> {
+  const cookieStore = await cookies();
   const newUserId = uuidv4();
   cookieStore.set(SESSION_COOKIE_NAME, newUserId, {
     httpOnly: true,
@@ -30,7 +33,6 @@ export async function getSessionUserId(): Promise<string> {
     maxAge: SESSION_MAX_AGE,
     path: "/",
   });
-
   return newUserId;
 }
 

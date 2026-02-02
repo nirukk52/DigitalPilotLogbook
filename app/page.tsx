@@ -4,16 +4,22 @@ import { getSessionUserId } from "@/lib/session";
 
 /**
  * Root route - auto-detects user state and redirects appropriately
- * - New user (no progress) -> Landing page
+ * - No session or no progress -> Landing page
  * - Onboarding in progress -> Onboarding page
  * - Onboarding completed -> App overview page
  */
 export default async function Home() {
   const userId = await getSessionUserId();
+  
+  // No session yet - show landing page (session created when onboarding starts)
+  if (!userId) {
+    redirect("/landing");
+  }
+
   const progress = await getOnboardingProgress(userId);
 
   if (!progress) {
-    // New user - show landing page
+    // Has session but no progress - show landing page
     redirect("/landing");
   }
 

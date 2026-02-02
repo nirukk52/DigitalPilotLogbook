@@ -15,8 +15,18 @@ import {
   saveLicence,
   deleteLicence,
 } from "@/lib/db/queries";
-import { getSessionUserId } from "@/lib/session";
+import { getSessionUserId, createSession } from "@/lib/session";
 import type { Licence } from "@/lib/db/schema";
+
+/**
+ * Get or create a session userId
+ * Called from Server Actions where cookie modification is allowed
+ */
+async function getOrCreateUserId(): Promise<string> {
+  const existingId = await getSessionUserId();
+  if (existingId) return existingId;
+  return await createSession();
+}
 
 export interface OnboardingFormData {
   authority: string;
@@ -40,7 +50,7 @@ export async function loadOnboardingData(): Promise<{
   personalization: PersonalizationFormData | null;
   progress: { currentStep: number; isCompleted: boolean } | null;
 }> {
-  const userId = await getSessionUserId();
+  const userId = await getOrCreateUserId();
   const [settings, personalization, progress] = await Promise.all([
     getUserSettings(userId),
     getPersonalizationSettings(userId),
@@ -79,7 +89,7 @@ export async function loadOnboardingData(): Promise<{
 export async function updateOnboardingSettings(
   settings: OnboardingFormData
 ): Promise<void> {
-  const userId = await getSessionUserId();
+  const userId = await getOrCreateUserId();
   await saveUserSettings(settings, userId);
 }
 
@@ -89,7 +99,7 @@ export async function updateOnboardingSettings(
 export async function updatePersonalizationSettings(
   settings: PersonalizationFormData
 ): Promise<void> {
-  const userId = await getSessionUserId();
+  const userId = await getOrCreateUserId();
   await savePersonalizationSettings(settings, userId);
 }
 
@@ -100,7 +110,7 @@ export async function updateOnboardingProgress(
   currentStep: number,
   isCompleted: boolean = false
 ): Promise<void> {
-  const userId = await getSessionUserId();
+  const userId = await getOrCreateUserId();
   await saveOnboardingProgress({
     currentStep,
     totalSteps: 7,
@@ -113,7 +123,7 @@ export async function updateOnboardingProgress(
  * Load licences for the user
  */
 export async function loadLicences(): Promise<Licence[]> {
-  const userId = await getSessionUserId();
+  const userId = await getOrCreateUserId();
   return await getLicences(userId);
 }
 
@@ -148,7 +158,7 @@ export async function addLicence(data: {
   recencyStartDate: string;
   recencyEndDate: string;
 }): Promise<Licence> {
-  const userId = await getSessionUserId();
+  const userId = await getOrCreateUserId();
   return await saveLicence({
     licenceType: data.licenceType,
     licenceCategory: data.licenceCategory,
@@ -171,6 +181,6 @@ export async function addLicence(data: {
  * Remove a licence
  */
 export async function removeLicence(licenceId: number): Promise<void> {
-  const userId = await getSessionUserId();
+  const userId = await getOrCreateUserId();
   await deleteLicence(licenceId, userId);
 }
