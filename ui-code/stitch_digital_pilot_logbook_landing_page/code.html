@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Pilot Logbook - Modern. Secure. Effortless.</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#111a22",
+              "surface-dark": "#192633",
+              "surface-border": "#324d67",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+              "sans": ["Inter", "sans-serif"],
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for dark theme elegance */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111a22; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #324d67; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #137fec; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden">
+<!-- Navbar -->
+<header class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-[#233648] bg-white/90 dark:bg-[#111a22]/90 backdrop-blur-md">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<!-- Logo -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">flight_takeoff</span>
+</div>
+<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">DigitalPilot</span>
+</div>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#features">Features</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#how-it-works">How it Works</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#compliance">Compliance</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-3">
+<a class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-bold text-slate-700 dark:text-white transition-colors hover:text-primary" href="/onboarding">
+                        Log In
+                    </a>
+<a class="inline-flex items-center justify-center rounded-lg bg-primary hover:bg-primary/90 transition-colors px-4 py-2 text-sm font-bold text-white shadow-lg shadow-primary/20" href="/onboarding">
+                        Start Free Trial
+                    </a>
+</div>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative pt-12 pb-20 lg:pt-24 lg:pb-32 overflow-hidden">
+<!-- Background Elements -->
+<div class="absolute inset-0 bg-background-light dark:bg-background-dark -z-20"></div>
+<!-- Gradient Mesh -->
+<div class="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] -z-10"></div>
+<div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[100px] -z-10"></div>
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+<!-- Content -->
+<div class="flex flex-col gap-6 text-center lg:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider w-fit mx-auto lg:mx-0">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        New: AI Logbook Analysis
+                    </div>
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-slate-900 dark:text-white">
+                        Modern. Secure.<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-400">Effortless.</span>
+</h1>
+<p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                        The next-generation logbook for professional pilots. AI-assisted logging, roster import from 120+ airlines, and audit-ready exports ensure your records are precise and secure.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-4">
+<a href="/onboarding" class="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all hover:scale-[1.02]">
+                            Start Free Trial
+                        </a>
+<a href="/onboarding" class="inline-flex h-12 items-center justify-center rounded-lg border border-slate-200 dark:border-surface-border bg-white dark:bg-surface-dark px-8 text-base font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#203040] transition-all">
+                            View Demo
+                        </a>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-500">
+                        No credit card required · 14-day free trial · FAA &amp; EASA Compliant
+                    </p>
+</div>
+<!-- Hero Image -->
+<div class="relative lg:ml-auto w-full max-w-[600px] mx-auto group perspective-1000">
+<div class="relative rounded-xl border border-slate-200 dark:border-surface-border bg-slate-900/50 backdrop-blur-xl shadow-2xl overflow-hidden aspect-[4/3] group-hover:shadow-primary/10 transition-shadow duration-500">
+<!-- Simulated Dashboard UI -->
+<div class="absolute inset-0 bg-cover bg-center opacity-90" data-alt="Digital pilot logbook dashboard interface showing flight hours and charts" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBRXizHfgVJnM1HF9jeoh4_PSOtfm7zqgMiPWvVt2VYxzVNbYHu_MYXNTSCzCIHYA8_8akgD3F-WU70MbkEmo0wUMVwqhkMgfA0x4lB0rAXgqmfYzX65K_Wi63rQ9xoJZdeuxu6kWJei152D7mje9KZaxnGp1kD1fmYhmOJ2OUB9C4XKZ_axWFiuqQqoWLu1NeNK-dURT2aPJKmpbJ1E2PO0_nxe40MAivalzDuQd3Vbqk-mr0cwxmvYze7f8pPSenIoXA3VFhgvpE');">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+<!-- Floating UI Elements -->
+<div class="absolute bottom-6 left-6 right-6 p-4 rounded-lg bg-surface-dark/90 border border-surface-border backdrop-blur-md shadow-lg">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-white text-sm font-medium">Recent Activity</h3>
+<span class="text-primary text-xs font-bold">Live Sync</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-3 p-2 rounded bg-background-dark/50">
+<div class="w-8 h-8 rounded bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">flight_land</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-white text-xs font-medium truncate">LHR - JFK (BA117)</p>
+<p class="text-slate-400 text-[10px]">Boeing 777-300ER • 7h 20m</p>
+</div>
+<span class="text-emerald-400 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                                        Logged
+                                    </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative glow behind image -->
+<div class="absolute -inset-4 bg-primary/20 blur-2xl -z-10 rounded-full opacity-50"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Logo Cloud -->
+<section class="py-10 border-y border-slate-200 dark:border-surface-border bg-white dark:bg-[#0b1218]">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<p class="text-center text-sm font-medium text-slate-500 dark:text-slate-400 mb-6">Trusted by pilots flying for major airlines</p>
+<div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+<!-- Using placeholder text as logos for generic representation -->
+<span class="text-xl font-bold text-slate-800 dark:text-white font-serif">AeroLines</span>
+<span class="text-xl font-black text-slate-800 dark:text-white tracking-tight italic">SKYWAYS</span>
+<span class="text-xl font-bold text-slate-800 dark:text-white">TRANS<span class="text-primary">OCEANIC</span></span>
+<span class="text-xl font-semibold text-slate-800 dark:text-white tracking-widest">HORIZON</span>
+<span class="text-xl font-bold text-slate-800 dark:text-white font-mono">JetStream</span>
+</div>
+</div>
+</section>
+<!-- Features Grid -->
+<section class="py-20 lg:py-32 relative bg-background-light dark:bg-background-dark" id="features">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4">Engineered for Precision</h2>
+<p class="text-lg text-slate-600 dark:text-slate-400">Experience the most advanced logging tools designed for the modern aviator. Focus on flying, we'll handle the paperwork.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="group relative p-8 rounded-2xl bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-blue-50 dark:bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">cloud_upload</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Import from Anywhere</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Seamlessly import roster data from over 120+ airlines directly into your logbook. Supports AIMS, Sabre, NetLine, and more.
+                    </p>
+<div class="mt-6 flex items-center gap-2 text-xs font-mono text-slate-400 dark:text-slate-500 border-t border-slate-100 dark:border-surface-border pt-4">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        AIMS Connected
+                    </div>
+</div>
+<!-- Feature 2 -->
+<div class="group relative p-8 rounded-2xl bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="absolute top-8 right-8">
+<span class="px-2 py-1 rounded bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase tracking-wide border border-indigo-100 dark:border-indigo-800">
+                            Beta
+                        </span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">smart_toy</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">AI-Assisted Logging</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Smart auto-fill predicts your next entry. Error detection powered by AI minimizes manual entry mistakes before they happen.
+                    </p>
+<div class="mt-6 p-2 rounded bg-slate-50 dark:bg-background-dark/50 border border-slate-100 dark:border-surface-border">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm animate-pulse">auto_awesome</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">"Auto-filled night landing..."</span>
+</div>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="group relative p-8 rounded-2xl bg-white dark:bg-surface-dark border border-slate-200 dark:border-surface-border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-teal-50 dark:bg-teal-500/10 flex items-center justify-center text-teal-600 dark:text-teal-400 mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">verified_user</span>
+</div>
+<h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Audit-Ready Records</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Generate compliant PDF reports instantly. Your data is always ready for FAA, EASA, and airline interviews.
+                    </p>
+<div class="mt-6 flex -space-x-2 overflow-hidden">
+<div class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 ring-2 ring-white dark:ring-surface-dark text-[10px] font-bold text-slate-600 dark:text-slate-300">PDF</div>
+<div class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 ring-2 ring-white dark:ring-surface-dark text-[10px] font-bold text-slate-600 dark:text-slate-300">CSV</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How it Works Section -->
+<section class="py-20 lg:py-32 bg-white dark:bg-[#0b1218]" id="how-it-works">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-16 text-center">How it Works</h2>
+<div class="relative">
+<!-- Connecting Line (Desktop) -->
+<div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 dark:bg-surface-border -translate-y-1/2 z-0"></div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-white dark:bg-surface-dark border-4 border-primary shadow-lg flex items-center justify-center text-xl font-bold text-slate-900 dark:text-white mb-6">1</div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Create Account</h3>
+<p class="text-sm text-slate-600 dark:text-slate-400">Sign up in seconds. No credit card required for the trial.</p>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-white dark:bg-surface-dark border-4 border-slate-200 dark:border-surface-border flex items-center justify-center text-xl font-bold text-slate-900 dark:text-white mb-6">2</div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Adjust Settings</h3>
+<p class="text-sm text-slate-600 dark:text-slate-400">Configure aircraft types, ratings, and custom fields.</p>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-white dark:bg-surface-dark border-4 border-slate-200 dark:border-surface-border flex items-center justify-center text-xl font-bold text-slate-900 dark:text-white mb-6">3</div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Bring Data</h3>
+<p class="text-sm text-slate-600 dark:text-slate-400">Import your previous logs via CSV or airline roster connection.</p>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-white dark:bg-surface-dark border-4 border-slate-200 dark:border-surface-border flex items-center justify-center text-xl font-bold text-slate-900 dark:text-white mb-6">4</div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Start Logging</h3>
+<p class="text-sm text-slate-600 dark:text-slate-400">Log flights on the go with smart auto-fill features.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Authority Compliance Section -->
+<section class="py-20 lg:py-24 bg-surface-dark border-y border-surface-border relative overflow-hidden" id="compliance">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="grid md:grid-cols-2 gap-12 items-center">
+<div>
+<h2 class="text-3xl md:text-4xl font-black text-white mb-6">Authority-Approved Exports</h2>
+<p class="text-lg text-slate-300 mb-8">
+                        Fully compliant with major aviation authorities. One-click PDF generation for your records. We keep up with the regulations so you don't have to.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<div class="flex items-center gap-3 px-5 py-3 rounded-lg bg-[#111a22] border border-surface-border hover:border-primary transition-colors cursor-default">
+<span class="material-symbols-outlined text-slate-400">public</span>
+<span class="font-bold text-white">EASA Compliant</span>
+</div>
+<div class="flex items-center gap-3 px-5 py-3 rounded-lg bg-[#111a22] border border-surface-border hover:border-primary transition-colors cursor-default">
+<span class="material-symbols-outlined text-slate-400">flag</span>
+<span class="font-bold text-white">FAA Compliant</span>
+</div>
+<div class="flex items-center gap-3 px-5 py-3 rounded-lg bg-[#111a22] border border-surface-border hover:border-primary transition-colors cursor-default">
+<span class="material-symbols-outlined text-slate-400">verified</span>
+<span class="font-bold text-white">UK CAA</span>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="rounded-xl overflow-hidden shadow-2xl border border-surface-border bg-[#111a22]">
+<img alt="Close up of a modern airplane cockpit control panel at night" class="w-full h-auto opacity-80 hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsMxMngV6Lc4aG7h5ARdQHpPqI_J9VNR9epdmvWg_o5oMtPkyeMg-lLt4bJjASNWAWQ41TOfTa1nACc_w0SB8bbF9lANmTj6imPJW-U7uF2QTadOQwJwNvsaS6dRjfC5WlHpgvsCnFBHaHqJoa8o7KHn9s-jwvfVVdu1iAbglN3pmIj810kvmJIbleuz0TIcjle2DNeD3P1cMkwi-EWKG9_WUq2zJKKAWDk6y69q0jBc5AabTo3WTDYFDjbgq_PM-fbwHGYXs5erY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#111a22] to-transparent"></div>
+<div class="absolute bottom-6 left-6">
+<button class="flex items-center gap-2 text-primary font-bold text-sm hover:text-white transition-colors">
+                                Learn more about Compliance 
+                                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24 bg-background-light dark:bg-background-dark text-center">
+<div class="max-w-[800px] mx-auto px-4">
+<h2 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-6">Ready to upgrade your flight deck?</h2>
+<p class="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto">
+                Join thousands of pilots who have switched to the most intelligent logbook on the market. Start your free 14-day trial today.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<a href="/onboarding" class="inline-flex h-14 items-center justify-center rounded-lg bg-primary px-8 text-lg font-bold text-white shadow-xl shadow-primary/25 hover:bg-primary/90 transition-all hover:-translate-y-1">
+                    Start Free Trial
+                </a>
+<a href="/onboarding" class="inline-flex h-14 items-center justify-center rounded-lg border border-slate-300 dark:border-surface-border bg-transparent px-8 text-lg font-bold text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-surface-dark transition-all">
+                    Contact Sales
+                </a>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white dark:bg-[#0b1218] border-t border-slate-200 dark:border-surface-border pt-16 pb-8">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+<div class="col-span-2 lg:col-span-2">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">flight_takeoff</span>
+</div>
+<span class="text-lg font-bold text-slate-900 dark:text-white">DigitalPilot</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs mb-6">
+                        The professional standard for digital flight logging. Secure, compliant, and always accessible.
+                    </p>
+<div class="flex gap-4">
+<a class="text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="sr-only">Twitter</span>
+<svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
+</a>
+<a class="text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="sr-only">GitHub</span>
+<svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+</a>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4">Product</h4>
+<ul class="space-y-3">
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Features</a></li>
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Pricing</a></li>
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Import Tools</a></li>
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Roadmap</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4">Support</h4>
+<ul class="space-y-3">
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Help Center</a></li>
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Contact Us</a></li>
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">System Status</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4">Legal</h4>
+<ul class="space-y-3">
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Privacy Policy</a></li>
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Terms of Service</a></li>
+<li><a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary" href="#">Cookie Settings</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-slate-200 dark:border-surface-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-slate-500 dark:text-slate-500">© 2023 Digital Pilot Logbook Inc. All rights reserved.</p>
+<div class="flex gap-4">
+<button class="bg-black text-white px-3 py-1 rounded text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-base">ios</span> App Store
+                     </button>
+<button class="bg-black text-white px-3 py-1 rounded text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-base">android</span> Google Play
+                     </button>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
