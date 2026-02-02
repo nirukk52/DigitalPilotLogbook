@@ -2,6 +2,9 @@ import { redirect } from "next/navigation";
 import { getOnboardingProgress } from "@/lib/db/queries";
 import { getSessionUserId } from "@/lib/session";
 
+// Force dynamic rendering - this page depends on cookies and database state
+export const dynamic = "force-dynamic";
+
 /**
  * Root route - auto-detects user state and redirects appropriately
  * Session is guaranteed to exist (created by proxy/middleware)
