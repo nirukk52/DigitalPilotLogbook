@@ -1,50 +1,57 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Digital Pilot Logbook Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. TCCA Compliance First
+All outputs (PDF, calculations, time buckets) must strictly adhere to Transport Canada Civil Aviation (TCCA) logbook format and requirements. The regulatory format is non-negotiable - the application exists to produce TCCA-acceptable documentation that pilots can present to examiners.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Lossless Import
+Existing pilot data (869+ flights in Excel) must import without any data loss. Every column, time bucket, and entry must map correctly to the normalized database. Import errors must surface clearly with actionable messages. Pilots trust their logbooks with their careers.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Calculation Accuracy
+All 40+ TCCA time buckets must calculate correctly using established rules:
+- Cross-country (XC) is a qualifier, not additive time
+- Instrument time (IMC/hood) is a subset of flight time
+- Instructor and dual received are mutually exclusive roles
+- Day/night allocation must be precise
+- Page totals and running totals must match to 0.01 hours
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Fast Entry (20-30 Second Target)
+New flight entries require only 6-7 core fields: Date, Aircraft, Registration, Role, Route, Flight Time, Tags. All other fields (40+ time buckets) are auto-calculated from these inputs. The engine handles allocation; pilots should not manually calculate bucket distributions.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. PDF Visual Fidelity
+Generated PDF must visually match the physical TCCA logbook format:
+- 18 rows per page
+- Page totals at bottom
+- Totals forwarded from previous pages
+- Totals to date (cumulative)
+- Same column structure as physical logbook
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technical Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### Data Integrity
+- All time values stored as decimals (hours) with 0.1 precision
+- ICAO airport codes validated
+- Aircraft registry format validated (C-XXXX for Canada)
+- Date validations (no future flights)
+- All calculations reproducible and auditable
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### Calculation Rules
+- `FlightHours = Σ(all time buckets)` - must balance within 0.01 hours
+- `XC_PIC ≤ Total_PIC` - cross-country is subset of total
+- `IMC + Hood ≤ FlightHours` - instrument is subset of flight
+- Simulator flights: SE/ME buckets = 0, only simulator bucket filled
+- Aircraft category (SE/ME/SIM) determines which buckets are available
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### User Experience
+- Keyboard-first entry on desktop
+- Mobile-friendly stacked layout
+- Smart defaults from flight history
+- Read-only chips show calculated values
+- Advanced mode available for power users/edge cases
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution defines the immutable constraints for the Digital Pilot Logbook system. All features, implementations, and decisions must comply with these principles.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0 | **Ratified**: 2026-02-03

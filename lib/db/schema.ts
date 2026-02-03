@@ -9,6 +9,8 @@ import {
   boolean,
   integer,
   timestamp,
+  real,
+  date,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -109,6 +111,78 @@ export const licences = pgTable("licences", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+/**
+ * Flights table - stores individual flight log entries
+ * Core entity for pilot logbook with all TCCA time bucket columns
+ * Supports import from Excel and export to TCCA-compliant PDF
+ */
+export const flights = pgTable("flights", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull().default("default"),
+  
+  // Basic flight info
+  flightDate: date("flight_date").notNull(),
+  aircraftMakeModel: text("aircraft_make_model").notNull(),
+  registration: text("registration").notNull(),
+  pilotInCommand: text("pilot_in_command"),
+  copilotOrStudent: text("copilot_or_student"),
+  departureAirport: text("departure_airport"),
+  arrivalAirport: text("arrival_airport"),
+  remarks: text("remarks"),
+  
+  // Single-engine time (stored as decimal hours)
+  seDayDual: real("se_day_dual"),
+  seDayPic: real("se_day_pic"),
+  seDayCopilot: real("se_day_copilot"),
+  seNightDual: real("se_night_dual"),
+  seNightPic: real("se_night_pic"),
+  seNightCopilot: real("se_night_copilot"),
+  
+  // Multi-engine time
+  meDayDual: real("me_day_dual"),
+  meDayPic: real("me_day_pic"),
+  meDayCopilot: real("me_day_copilot"),
+  meNightDual: real("me_night_dual"),
+  meNightPic: real("me_night_pic"),
+  meNightCopilot: real("me_night_copilot"),
+  
+  // Cross-country time (subset of SE/ME)
+  xcDayDual: real("xc_day_dual"),
+  xcDayPic: real("xc_day_pic"),
+  xcDayCopilot: real("xc_day_copilot"),
+  xcNightDual: real("xc_night_dual"),
+  xcNightPic: real("xc_night_pic"),
+  xcNightCopilot: real("xc_night_copilot"),
+  
+  // Takeoffs/Landings (integer counts)
+  dayTakeoffsLandings: integer("day_takeoffs_landings"),
+  nightTakeoffsLandings: integer("night_takeoffs_landings"),
+  
+  // Instrument time
+  actualImc: real("actual_imc"),
+  hood: real("hood"),
+  simulator: real("simulator"),
+  ifrApproaches: integer("ifr_approaches"),
+  holding: integer("holding"),
+  
+  // Instructor/Dual
+  asFlightInstructor: real("as_flight_instructor"),
+  dualReceived: real("dual_received"),
+  
+  // Duty time
+  timeOn: text("time_on"),
+  timeOff: text("time_off"),
+  totalDuty: real("total_duty"),
+  
+  // Computed
+  flightHours: real("flight_hours").notNull(),
+  
+  // Metadata
+  importedAt: timestamp("imported_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 // Type exports for use in application code
 export type UserSettings = typeof userSettings.$inferSelect;
 export type NewUserSettings = typeof userSettings.$inferInsert;
@@ -118,3 +192,5 @@ export type PersonalizationSettings = typeof personalizationSettings.$inferSelec
 export type NewPersonalizationSettings = typeof personalizationSettings.$inferInsert;
 export type Licence = typeof licences.$inferSelect;
 export type NewLicence = typeof licences.$inferInsert;
+export type Flight = typeof flights.$inferSelect;
+export type NewFlight = typeof flights.$inferInsert;

@@ -15,6 +15,13 @@
       "when": 1770068491771,
       "tag": "0001_faulty_triathlon",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770156193499,
+      "tag": "0002_legal_skrulls",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samyak Jain - Professional Pilot Portfolio</title>
+    <style>
+        :root {
+            --primary: #9333ea;
+            --primary-dark: #7c22ce;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #0f0f23;
+            --mid-bg: #16213e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --accent: #a855f7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--mid-bg) 50%, var(--dark-bg) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pilot-name {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .pilot-title {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .certifications {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .cert-badge {
+            background: var(--card-bg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 2px solid var(--primary);
+            color: var(--accent);
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.2);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.75rem;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(147, 51, 234, 0.2);
+            border-color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 1.25rem;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 80%;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 2px;
+        }
+
+        /* Experience Timeline */
+        .experience-section {
+            margin-bottom: 3rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary) 0%, transparent 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 1.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid var(--darker-bg);
+            box-shadow: 0 0 0 4px var(--card-bg);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Aircraft Experience Grid */
+        .aircraft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .aircraft-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .aircraft-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .aircraft-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .aircraft-hours {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .aircraft-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .skill-category {
+            background: var(--card-bg);
+            padding: 1.75rem;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .skill-category-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--accent);
+        }
+
+        .skill-item {
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .skill-bar {
+            height: 6px;
+            background: rgba(147, 51, 234, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        /* Flight Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            padding: 1.75rem;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+        }
+
+        .summary-card-title {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .summary-item-value {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .pilot-name {
+                font-size: 2rem;
+            }
+
+            .pilot-title {
+                font-size: 1rem;
+            }
+
+            .section-header {
+                font-size: 1.25rem;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-item::before {
+                left: -2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card, .aircraft-card, .timeline-item, .skill-category, .summary-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.15s; }
+        .stat-card:nth-child(3) { animation-delay: 0.2s; }
+        .stat-card:nth-child(4) { animation-delay: 0.25s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1 class="pilot-name">SAMYAK JAIN</h1>
+                <p class="pilot-title">Certified Flight Instructor | Commercial Pilot</p>
+                <div class="certifications">
+                    <span class="cert-badge">CPL</span>
+                    <span class="cert-badge">Flight Instructor</span>
+                    <span class="cert-badge">Instrument Training</span>
+                    <span class="cert-badge">Multi-Engine</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Flight Hours</div>
+                <div class="stat-value">1,089.5</div>
+                <div class="stat-subtitle">Across multiple aircraft types</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Instructor Hours</div>
+                <div class="stat-value">806.6</div>
+                <div class="stat-subtitle">As flight instructor</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">PIC Hours</div>
+                <div class="stat-value">889.7</div>
+                <div class="stat-subtitle">Pilot in command</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cross-Country</div>
+                <div class="stat-value">97.3</div>
+                <div class="stat-subtitle">Navigation hours</div>
+            </div>
+        </div>
+
+        <!-- Flight Experience Breakdown -->
+        <h2 class="section-header">Flight Experience Overview</h2>
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="summary-card-title">Flight Time Categories</div>
+                <div class="summary-items">
+                    <div class="summary-item">
+                        <span class="summary-item-label">Single-Engine Day</span>
+                        <span class="summary-item-value">140.2 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">Multi-Engine Day</span>
+                        <span class="summary-item-value">11.1 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">Night Flying</span>
+                        <span class="summary-item-value">29.4 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">Instrument (Actual IMC)</span>
+                        <span class="summary-item-value">3.6 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-title">Instrument & Advanced</div>
+                <div class="summary-items">
+                    <div class="summary-item">
+                        <span class="summary-item-label">Hood Time</span>
+                        <span class="summary-item-value">24.8 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">Simulator</span>
+                        <span class="summary-item-value">28.8 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">IFR Approaches</span>
+                        <span class="summary-item-value">27</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">Day Takeoffs/Landings</span>
+                        <span class="summary-item-value">195</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-title">Training Progress</div>
+                <div class="summary-items">
+                    <div class="summary-item">
+                        <span class="summary-item-label">Dual Received</span>
+                        <span class="summary-item-value">6.6 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">As Flight Instructor</span>
+                        <span class="summary-item-value">806.6 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">Cross-Country Dual</span>
+                        <span class="summary-item-value">24.0 hrs</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-item-label">Cross-Country PIC</span>
+                        <span class="summary-item-value">97.3 hrs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aircraft Experience -->
+        <h2 class="section-header">Aircraft Experience</h2>
+        <div class="aircraft-grid">
+            <div class="aircraft-card">
+                <div class="aircraft-name">Cessna 172</div>
+                <div class="aircraft-hours">850+</div>
+                <div class="aircraft-subtitle">Single-Engine</div>
+            </div>
+            <div class="aircraft-card">
+                <div class="aircraft-name">Cessna 152</div>
+                <div class="aircraft-hours">200+</div>
+                <div class="aircraft-subtitle">Single-Engine</div>
+            </div>
+            <div class="aircraft-card">
+                <div class="aircraft-name">Piper PA-34</div>
+                <div class="aircraft-hours">11.1</div>
+                <div class="aircraft-subtitle">Multi-Engine</div>
+            </div>
+            <div class="aircraft-card">
+                <div class="aircraft-name">Redbird FMX</div>
+                <div class="aircraft-hours">20+</div>
+                <div class="aircraft-subtitle">Simulator</div>
+            </div>
+            <div class="aircraft-card">
+                <div class="aircraft-name">ALSIM ALX</div>
+                <div class="aircraft-hours">8+</div>
+                <div class="aircraft-subtitle">Simulator</div>
+            </div>
+        </div>
+
+        <!-- Professional Timeline -->
+        <h2 class="section-header">Professional Journey</h2>
+        <div class="experience-section">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Jan 2024 - Present</div>
+                    <div class="timeline-title">Certified Flight Instructor</div>
+                    <div class="timeline-description">
+                        Training student pilots in C152 and C172 aircraft at CZBB. Specializing in PPL preparation, circuit training, upper airworks, and flight test preparation. Over 800 hours of dual instruction given, with students progressing from first flight through solo and flight tests.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Jan 2023</div>
+                    <div class="timeline-title">Commercial Pilot License (CPL)</div>
+                    <div class="timeline-description">
+                        Successfully completed CPL flight test with James Scott. Extensive training including advanced maneuvers, night flying, cross-country navigation, and precision forced landings. Demonstrated proficiency in single-engine operations and commercial pilot standards.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">May 2022</div>
+                    <div class="timeline-title">Private Pilot License (PPL)</div>
+                    <div class="timeline-description">
+                        Earned Private Pilot License after comprehensive training in attitudes and movements, advanced maneuvers, stalls and spins, circuits, cross-country navigation, and emergency procedures. First solo completed October 2021.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Jul 2021</div>
+                    <div class="timeline-title">Flight Training Commenced</div>
+                    <div class="timeline-description">
+                        Began flight training journey at CZBB with initial instruction from Ghaleb Alashwal. Covered foundational skills including attitudes and movement, basic and advanced maneuvers, slow flight, and circuit operations.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills & Competencies -->
+        <h2 class="section-header">Skills & Competencies</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <div class="skill-category-title">Flight Operations</div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Circuit Training</span>
+                        <span>Expert</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Upper Airworks</span>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Cross-Country Navigation</span>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Emergency Procedures</span>
+                        <span>Proficient</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 88%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-category-title">Instruction & Training</div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Flight Test Preparation</span>
+                        <span>Expert</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 92%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Student Assessment</span>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 87%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Lesson Planning</span>
+                        <span>Proficient</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Safety Management</span>
+                        <span>Expert</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 93%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-category-title">Advanced Operations</div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Night Flying</span>
+                        <span>Qualified</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Instrument Flying</span>
+                        <span>Training</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Multi-Engine Operations</span>
+                        <span>Introduction</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Mountain Flying</span>
+                        <span>Familiarization</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Generated by <a href="#">Digital Pilot Logbook</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Animate skill bars on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const skillBars = document.querySelectorAll('.skill-fill');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.width = entry.target.style.width;
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            skillBars.forEach(bar => observer.observe(bar));
+        });
+    </script>
+</body>
+</html>

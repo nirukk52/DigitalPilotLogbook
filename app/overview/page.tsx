@@ -101,7 +101,7 @@ export default function OverviewPage() {
                 href="/import"
                 className="flex items-center gap-2 px-3 py-2 text-white/60 hover:text-white/80 hover:bg-white/5 rounded-lg text-sm transition-colors"
               >
-                Import
+                Import Excel
               </Link>
               <Link
                 href="/export"
@@ -220,7 +220,10 @@ export default function OverviewPage() {
               </svg>
             </button>
 
-            <button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 transition-colors group">
+            <Link
+              href="/import"
+              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 transition-colors group block"
+            >
               <div className="text-white font-medium">Import your data</div>
               <svg
                 className="w-6 h-6 text-white/60 mx-auto mt-2 group-hover:text-white/80 transition-colors"
@@ -230,7 +233,7 @@ export default function OverviewPage() {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
-            </button>
+            </Link>
 
             <button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 transition-colors group">
               <div className="text-white font-medium">Settings</div>

@@ -1,0 +1,697 @@
+{
+  "id": "28434887-4553-40e8-8cdb-cab3c191278f",
+  "prevId": "5f86b38a-b78e-49e2-a334-8c9d927c80a6",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.flights": {
+      "name": "flights",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'default'"
+        },
+        "flight_date": {
+          "name": "flight_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "aircraft_make_model": {
+          "name": "aircraft_make_model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "registration": {
+          "name": "registration",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pilot_in_command": {
+          "name": "pilot_in_command",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "copilot_or_student": {
+          "name": "copilot_or_student",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "departure_airport": {
+          "name": "departure_airport",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "arrival_airport": {
+          "name": "arrival_airport",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remarks": {
+          "name": "remarks",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "se_day_dual": {
+          "name": "se_day_dual",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "se_day_pic": {
+          "name": "se_day_pic",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "se_day_copilot": {
+          "name": "se_day_copilot",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "se_night_dual": {
+          "name": "se_night_dual",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "se_night_pic": {
+          "name": "se_night_pic",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "se_night_copilot": {
+          "name": "se_night_copilot",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "me_day_dual": {
+          "name": "me_day_dual",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "me_day_pic": {
+          "name": "me_day_pic",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "me_day_copilot": {
+          "name": "me_day_copilot",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "me_night_dual": {
+          "name": "me_night_dual",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "me_night_pic": {
+          "name": "me_night_pic",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "me_night_copilot": {
+          "name": "me_night_copilot",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "xc_day_dual": {
+          "name": "xc_day_dual",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "xc_day_pic": {
+          "name": "xc_day_pic",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "xc_day_copilot": {
+          "name": "xc_day_copilot",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "xc_night_dual": {
+          "name": "xc_night_dual",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "xc_night_pic": {
+          "name": "xc_night_pic",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "xc_night_copilot": {
+          "name": "xc_night_copilot",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "day_takeoffs_landings": {
+          "name": "day_takeoffs_landings",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "night_takeoffs_landings": {
+          "name": "night_takeoffs_landings",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "actual_imc": {
+          "name": "actual_imc",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hood": {
+          "name": "hood",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "simulator": {
+          "name": "simulator",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ifr_approaches": {
+          "name": "ifr_approaches",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "holding": {
+          "name": "holding",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "as_flight_instructor": {
+          "name": "as_flight_instructor",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dual_received": {
+          "name": "dual_received",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "time_on": {
+          "name": "time_on",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "time_off": {
+          "name": "time_off",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_duty": {
+          "name": "total_duty",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flight_hours": {
+          "name": "flight_hours",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imported_at": {
+          "name": "imported_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.licences": {
+      "name": "licences",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'default'"
+        },
+        "licence_type": {
+          "name": "licence_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "licence_category": {
+          "name": "licence_category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "authority": {
+          "name": "authority",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "licence_number": {
+          "name": "licence_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_of_issue": {
+          "name": "date_of_issue",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "valid_until": {
+          "name": "valid_until",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_hours": {
+          "name": "total_hours",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_landings": {
+          "name": "total_landings",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pic_hours": {
+          "name": "pic_hours",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "instructor_hours": {
+          "name": "instructor_hours",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recency_months": {
+          "name": "recency_months",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recency_start_date": {
+          "name": "recency_start_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recency_end_date": {
+          "name": "recency_end_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.onboarding_progress": {
+      "name": "onboarding_progress",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'default'"
+        },
+        "current_step": {
+          "name": "current_step",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "total_steps": {
+          "name": "total_steps",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 9
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_completed": {
+          "name": "is_completed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "onboarding_progress_user_id_unique": {
+          "name": "onboarding_progress_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.personalization_settings": {
+      "name": "personalization_settings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'default'"
+        },
+        "language": {
+          "name": "language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'en-GB'"
+        },
+        "language_name": {
+          "name": "language_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'English (UK)'"
+        },
+        "primary_color": {
+          "name": "primary_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'#9333ea'"
+        },
+        "appearance": {
+          "name": "appearance",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'dark'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "personalization_settings_user_id_unique": {
+          "name": "personalization_settings_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_settings": {
+      "name": "user_settings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'default'"
+        },
+        "authority": {
+          "name": "authority",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "authority_name": {
+          "name": "authority_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "decimal_format": {
+          "name": "decimal_format",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "timezone": {
+          "name": "timezone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'UTC'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_settings_log": {
+      "name": "user_settings_log",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "field_name": {
+          "name": "field_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "old_value": {
+          "name": "old_value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "new_value": {
+          "name": "new_value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_at": {
+          "name": "changed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "change_reason": {
+          "name": "change_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
