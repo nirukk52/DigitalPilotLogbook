@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { savePilotProfile, getUserSettings } from "@/lib/db/queries";
+import { getSessionUserId } from "@/lib/session";
 
 interface SaveProfileRequest {
   pilotName: string;
@@ -61,6 +62,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
+    const sessionId = await getSessionUserId();
     const settings = await getUserSettings("default");
     
     if (!settings) {
@@ -68,6 +70,7 @@ export async function GET() {
         success: true,
         profile: null,
         hasProfile: false,
+        sessionId,
       });
     }
 
@@ -79,6 +82,7 @@ export async function GET() {
         defaultInstructor: settings.defaultInstructor,
       },
       hasProfile: !!(settings.pilotName && settings.homeBase),
+      sessionId,
     });
   } catch (error) {
     console.error("Error getting profile:", error);

@@ -4,74 +4,8 @@
  */
 
 import type { ParsedFlight } from "@/lib/import/types";
-
-/**
- * Determines the logbook owner's name from flight data
- * The logbook owner is the person who:
- * 1. Has instructor time logged (asFlightInstructor) - they're the instructor building hours
- * 2. Has the most PIC time logged - they're flying as PIC
- * 3. Appears most frequently in copilot/student column when receiving dual - they're the student
- * 
- * We weight by hours to find who this logbook actually belongs to
- */
-export function determineLogbookOwner(flights: ParsedFlight[]): string {
-  const nameScores = new Map<string, number>();
-  
-  for (const flight of flights) {
-    // If someone logs instructor time, they're building their hours as instructor
-    // The instructor is the logbook owner in this case
-    if (flight.asFlightInstructor && flight.asFlightInstructor > 0) {
-      // When logging instructor time, the instructor (logbook owner) could be:
-      // - Listed as PIC
-      // - Listed as copilot/student (in some formats)
-      // Most likely the PIC when instructing
-      if (flight.pilotInCommand) {
-        const name = flight.pilotInCommand.toUpperCase().trim();
-        const current = nameScores.get(name) ?? 0;
-        // Heavy weight for instructor time - this is a strong signal
-        nameScores.set(name, current + (flight.asFlightInstructor * 3));
-      }
-    }
-    
-    // PIC time - the person flying as PIC is building their hours
-    const picHours = (flight.seDayPic ?? 0) + (flight.seNightPic ?? 0) +
-      (flight.meDayPic ?? 0) + (flight.meNightPic ?? 0) +
-      (flight.xcDayPic ?? 0) + (flight.xcNightPic ?? 0);
-    
-    if (picHours > 0 && flight.pilotInCommand) {
-      const name = flight.pilotInCommand.toUpperCase().trim();
-      const current = nameScores.get(name) ?? 0;
-      nameScores.set(name, current + picHours);
-    }
-    
-    // Dual received - the student receiving instruction is the logbook owner
-    // They would be listed in copilot/student column
-    if (flight.dualReceived && flight.dualReceived > 0) {
-      if (flight.copilotOrStudent) {
-        const name = flight.copilotOrStudent.toUpperCase().trim();
-        const current = nameScores.get(name) ?? 0;
-        // Heavy weight for dual received - strong signal this is the student's logbook
-        nameScores.set(name, current + (flight.dualReceived * 2));
-      }
-    }
-  }
-  
-  // Find the name with highest score
-  let maxScore = 0;
-  let owner = "Pilot";
-  
-  for (const [name, score] of nameScores.entries()) {
-    if (score > maxScore && name.length > 0) {
-      maxScore = score;
-      owner = name;
-    }
-  }
-  
-  // Format name nicely (Title Case)
-  return owner.split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-}
+// Re-export determineLogbookOwner from shared utility for backwards compatibility
+export { determineLogbookOwner } from "@/lib/flights/pilot-name";
 
 /**
  * Aggregated statistics for pilot portfolio display

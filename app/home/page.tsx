@@ -46,8 +46,10 @@ export default function HomePage() {
   const [flightCount, setFlightCount] = useState(0);
   const [isLoadingFlights, setIsLoadingFlights] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [copiedSession, setCopiedSession] = useState(false);
 
-  // Load recent flights
+  // Load recent flights and session ID
   const loadFlights = useCallback(async () => {
     try {
       const response = await fetch('/api/flights/defaults');
@@ -61,6 +63,13 @@ export default function HomePage() {
       if (flightsRes.ok) {
         const flightsData = await flightsRes.json();
         setRecentFlights(flightsData.flights || []);
+      }
+
+      // Fetch session ID
+      const profileRes = await fetch('/api/profile');
+      if (profileRes.ok) {
+        const profileData = await profileRes.json();
+        setSessionId(profileData.sessionId);
       }
     } catch {
       // Silent fail
@@ -88,6 +97,14 @@ export default function HomePage() {
     setSuccessMessage("Profile saved successfully!");
     setTimeout(() => setSuccessMessage(null), 3000);
   }, []);
+
+  const copySessionId = useCallback(() => {
+    if (sessionId) {
+      navigator.clipboard.writeText(sessionId);
+      setCopiedSession(true);
+      setTimeout(() => setCopiedSession(false), 2000);
+    }
+  }, [sessionId]);
 
   const handleEditFlight = useCallback(async (flight: Flight) => {
     // Infer role from flight data
@@ -455,6 +472,19 @@ export default function HomePage() {
             </div>
           )}
         </div>
+
+        {/* Session ID - subtle footer */}
+        {sessionId && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={copySessionId}
+              className="text-gray-400/60 dark:text-gray-500/60 hover:text-gray-500 dark:hover:text-gray-400 text-[10px] font-mono transition-colors"
+              title="Click to copy session ID"
+            >
+              {copiedSession ? "Copied!" : sessionId}
+            </button>
+          </div>
+        )}
       </main>
 
       {/* Add Flight Modal */}

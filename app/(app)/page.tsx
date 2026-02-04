@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 /**
@@ -12,6 +12,23 @@ export default function OverviewPage() {
     logbook: true,
     analyze: false,
   });
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => setSessionId(data.sessionId))
+      .catch(() => {});
+  }, []);
+
+  const copySessionId = () => {
+    if (sessionId) {
+      navigator.clipboard.writeText(sessionId);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   const toggleSection = (section: "logbook" | "analyze") => {
     setSidebarExpanded((prev) => ({
@@ -258,6 +275,19 @@ export default function OverviewPage() {
             </button>
           </div>
         </div>
+
+        {/* Session ID - subtle footer */}
+        {sessionId && (
+          <div className="px-6 py-2 text-center">
+            <button
+              onClick={copySessionId}
+              className="text-white/20 hover:text-white/40 text-[10px] font-mono transition-colors"
+              title="Click to copy session ID"
+            >
+              {copied ? "Copied!" : sessionId}
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );

@@ -124,6 +124,76 @@ All components support dark mode via `dark:` prefix:
 - Text: `text-gray-600 dark:text-gray-300`
 - Borders: `border-gray-200 dark:border-gray-700`
 
+## Dashboard/Portfolio Patterns
+
+### Data Dashboard Layout
+
+For one-pager data dashboards with charts and stats:
+
+```html
+<main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+```
+
+Key patterns:
+- `max-w-6xl` for readable content width
+- `space-y-6` for consistent vertical rhythm
+- Grid layouts: `grid md:grid-cols-2 gap-6` for side-by-side cards
+
+### Hero Stats Banner
+
+```html
+<section class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 text-white">
+```
+
+Key patterns:
+- Gradient backgrounds for visual interest
+- Large numbers: `text-3xl md:text-4xl font-black`
+- Uppercase labels: `text-xs uppercase tracking-wide`
+
+### Quick Stats Grid
+
+```html
+<section class="grid grid-cols-2 md:grid-cols-4 gap-3">
+  <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border">
+```
+
+Key patterns:
+- Emoji icons for visual appeal without icon libraries
+- Compact cards: `p-3` or `p-4` for tight layouts
+
+### Progress Bars
+
+```html
+<div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+  <div class="h-full bg-blue-500 rounded-full" style="width: 75%"></div>
+</div>
+```
+
+### Bar Charts (CSS-only)
+
+```html
+<div class="flex items-end gap-1 h-24">
+  {items.map(item => (
+    <div className="flex-1 flex flex-col items-center">
+      <div className="w-full bg-blue-500 rounded-t" style={{ height: `${percentage}%` }} />
+      <span className="text-[10px] text-slate-400 mt-1">{label}</span>
+    </div>
+  ))}
+</div>
+```
+
+### Ranked Lists
+
+```html
+<div class="flex items-center gap-3">
+  <span class="w-5 h-5 rounded bg-slate-100 flex items-center justify-center text-xs font-bold">1</span>
+  <div class="flex-1">
+    <span class="text-sm font-medium">{name}</span>
+    <span class="text-sm font-bold text-blue-600 ml-2">{value}</span>
+  </div>
+</div>
+```
+
 ## Resources
 
 - `assets/landing-template.html` - Complete landing page template

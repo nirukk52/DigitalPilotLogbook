@@ -4,122 +4,116 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 /**
- * Portfolio stats structure from API
- * Matches the database-calculated stats
+ * Advanced Portfolio Stats from the new API endpoint
+ * Contains pre-aggregated data for intuitive display
  */
-interface PortfolioStats {
-  totalFlightHours: number;
-  picHours: number;
-  instructorHours: number;
-  dualReceivedHours: number;
-  singleEngineDayHours: number;
-  singleEngineNightHours: number;
-  multiEngineDayHours: number;
-  multiEngineNightHours: number;
-  crossCountryHours: number;
-  nightFlyingHours: number;
-  actualImcHours: number;
-  hoodHours: number;
-  simulatorHours: number;
-  ifrApproaches: number;
-  totalFlights: number;
-  dayTakeoffsLandings: number;
-  nightTakeoffsLandings: number;
-  aircraftTypes: Map<string, number>;
-  firstFlightDate: Date | null;
-  lastFlightDate: Date | null;
+interface AdvancedPortfolioStats {
+  pilotName: string;
+  summary: {
+    totalHours: number;
+    totalFlights: number;
+    firstFlightDate: string | null;
+    lastFlightDate: string | null;
+    uniqueAircraft: number;
+    airportsVisited: number;
+    averageFlightDuration: number;
+  };
+  timeDistribution: {
+    singleEngine: number;
+    multiEngine: number;
+    night: number;
+    instrument: number;
+    crossCountry: number;
+    pic: number;
+    dual: number;
+    instructor: number;
+  };
+  monthlyTrend: Array<{
+    month: string;
+    hours: number;
+    flights: number;
+  }>;
+  yearlyProgression: Array<{
+    year: number;
+    totalHours: number;
+    flights: number;
+    picHours: number;
+    dualHours: number;
+  }>;
+  topAircraft: Array<{
+    aircraft: string;
+    flights: number;
+    hours: number;
+    avgDuration: number;
+  }>;
+  topAirports: Array<{
+    airport: string;
+    departures: number;
+    aircraftUsed: number;
+  }>;
+  counts: {
+    dayTakeoffsLandings: number;
+    nightTakeoffsLandings: number;
+    ifrApproaches: number;
+    simulatorHours: number;
+  };
 }
 
 /**
- * Portfolio Page - Displays pilot portfolio with flight statistics
- * Uses the frontend-landing-design skill patterns for consistent UI
- * Fetches data from database API for consistency with Recent Flights
- * Falls back to sessionStorage for import preview mode
+ * Portfolio Page - Modern one-pager pilot portfolio
+ * Displays flight statistics in a clean, intuitive format
+ * Uses advanced SQL aggregations for performance
  */
 export default function PortfolioPage() {
-  const [stats, setStats] = useState<PortfolioStats | null>(null);
-  const [pilotName, setPilotName] = useState<string>("Pilot");
+  const [stats, setStats] = useState<AdvancedPortfolioStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isPreviewMode, setIsPreviewMode] = useState(false);
 
   useEffect(() => {
-    async function loadPortfolioData() {
+    async function loadStats() {
       try {
-        // First, try to fetch from database API (source of truth)
-        // Use cache: 'no-store' to always get fresh data from database
-        const response = await fetch('/api/portfolio', { cache: 'no-store' });
+        const response = await fetch('/api/portfolio/stats', { cache: 'no-store' });
         
-        if (response.ok) {
-          const data = await response.json();
-          
-          // Check if there are any flights in the database
-          if (data.totalFlights > 0) {
-            // Convert dates and aircraftTypes from API response
-            const parsedStats: PortfolioStats = {
-              ...data,
-              firstFlightDate: data.firstFlightDate ? new Date(data.firstFlightDate) : null,
-              lastFlightDate: data.lastFlightDate ? new Date(data.lastFlightDate) : null,
-              aircraftTypes: new Map(data.aircraftTypes || []),
-            };
-            setStats(parsedStats);
-            setPilotName(data.pilotName || "Pilot");
-            setLoading(false);
-            return;
-          }
+        if (!response.ok) {
+          throw new Error('Failed to fetch portfolio data');
         }
-
-        // Fallback: Check sessionStorage for import preview mode
-        // This allows previewing portfolio before saving to database
-        const storedData = sessionStorage.getItem("portfolioData");
-        if (storedData) {
-          const data = JSON.parse(storedData);
-          // Convert date strings back to Date objects
-          if (data.stats.firstFlightDate) {
-            data.stats.firstFlightDate = new Date(data.stats.firstFlightDate);
-          }
-          if (data.stats.lastFlightDate) {
-            data.stats.lastFlightDate = new Date(data.stats.lastFlightDate);
-          }
-          // Convert aircraftTypes from array back to Map
-          if (data.stats.aircraftTypes) {
-            data.stats.aircraftTypes = new Map(data.stats.aircraftTypes);
-          }
-          setStats(data.stats);
-          setPilotName(data.pilotName || "Pilot");
-          setIsPreviewMode(true);
-          setLoading(false);
-          return;
+        
+        const data = await response.json();
+        
+        // Check for API error response
+        if (data.error) {
+          throw new Error(data.error);
         }
-
-        // No data available
-        setStats(null);
+        
+        setStats(data);
       } catch (e) {
-        console.error("Failed to load portfolio data:", e);
-        setError("Failed to load portfolio data");
+        console.error("Failed to load portfolio:", e);
+        setError(e instanceof Error ? e.message : "Failed to load portfolio data");
       } finally {
         setLoading(false);
       }
     }
-
-    loadPortfolioData();
+    loadStats();
   }, []);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#101922] flex items-center justify-center">
-        <div className="text-gray-500 dark:text-gray-400">Loading portfolio...</div>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <span className="text-slate-500 dark:text-slate-400">Loading portfolio...</span>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#101922] flex flex-col items-center justify-center gap-4">
-        <p className="text-red-500">{error}</p>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center gap-4 p-4">
+        <p className="text-red-500 text-center">{error}</p>
         <Link
           href="/home"
-          className="flex items-center justify-center px-6 py-3 bg-[#137fec] text-white font-bold rounded-lg hover:bg-blue-600 transition-colors shadow-sm"
+          className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
         >
           Go to Home
         </Link>
@@ -127,23 +121,23 @@ export default function PortfolioPage() {
     );
   }
 
-  if (!stats || stats.totalFlights === 0) {
+  if (!stats || stats.summary.totalFlights === 0) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#101922] flex flex-col items-center justify-center gap-6">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center gap-6 p-4">
         <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-300 text-lg mb-2">No flight data found</p>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">Add flights or import your logbook to see your portfolio</p>
+          <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">No Flight Data</h2>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">Import your logbook to see your portfolio</p>
         </div>
-        <div className="flex gap-4 mt-4">
+        <div className="flex gap-3">
           <Link
             href="/home"
-            className="flex items-center justify-center px-6 py-3 bg-[#137fec] text-white font-bold rounded-lg hover:bg-blue-600 transition-colors shadow-sm"
+            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Go to Home
+            Go Home
           </Link>
           <Link
             href="/import"
-            className="flex items-center justify-center px-6 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white text-sm font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             Import Logbook
           </Link>
@@ -152,353 +146,287 @@ export default function PortfolioPage() {
     );
   }
 
-  const formatHours = (hours: number) => hours.toFixed(1);
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return "-";
+    return new Date(dateStr).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  };
 
-  // Sort aircraft by hours (descending)
-  const sortedAircraft = Array.from(stats.aircraftTypes.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6);
+  // Calculate career duration
+  const getCareerDuration = () => {
+    if (!stats.summary.firstFlightDate || !stats.summary.lastFlightDate) return null;
+    const first = new Date(stats.summary.firstFlightDate);
+    const last = new Date(stats.summary.lastFlightDate);
+    const years = Math.floor((last.getTime() - first.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+    const months = Math.floor(((last.getTime() - first.getTime()) % (365.25 * 24 * 60 * 60 * 1000)) / (30.44 * 24 * 60 * 60 * 1000));
+    if (years > 0) return `${years}y ${months}m`;
+    return `${months} months`;
+  };
+
+  // Get max for bar charts
+  const maxMonthlyHours = Math.max(...stats.monthlyTrend.map(m => m.hours), 1);
+  const maxYearlyHours = Math.max(...stats.yearlyProgression.map(y => y.totalHours), 1);
+  const maxAircraftHours = Math.max(...stats.topAircraft.map(a => a.hours), 1);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#101922] font-sans antialiased">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-[#101922]/95 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <Link
-                href="/home"
-                className="flex items-center gap-2 text-gray-600 hover:text-[#137fec] dark:text-gray-300 dark:hover:text-white transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                <span className="text-sm font-medium">Back to Home</span>
-              </Link>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[#137fec]">
-                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-                </svg>
-              </span>
-              <span className="text-xl font-bold tracking-tight text-[#111418] dark:text-white">Pilot Portfolio</span>
-            </div>
-            <div className="flex items-center gap-3">
-              {isPreviewMode && (
-                <span className="px-3 py-1 text-xs font-semibold bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full">
-                  Preview Mode
-                </span>
-              )}
-              <Link
-                href="/import"
-                className="flex items-center justify-center px-4 py-2 text-sm font-bold text-white bg-[#137fec] hover:bg-blue-600 rounded-lg transition-colors shadow-sm hover:shadow-md"
-              >
-                Export PDF
-              </Link>
-            </div>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      {/* Compact Header */}
+      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link href="/home" className="flex items-center gap-2 text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-white transition-colors">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span className="text-sm font-medium">Back</span>
+          </Link>
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+            </svg>
+            <span className="font-bold text-slate-800 dark:text-white">Portfolio</span>
           </div>
+          <button
+            onClick={() => navigator.clipboard.writeText(window.location.href)}
+            className="px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+          >
+            Share
+          </button>
         </div>
       </header>
 
-      {/* Preview Mode Banner */}
-      {isPreviewMode && (
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-200 dark:border-yellow-800/30 px-4 sm:px-6 lg:px-8 py-3">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-              <p className="text-yellow-700 dark:text-yellow-400 text-sm font-medium">
-                This is a preview from your import. Save to logbook to make it permanent.
-              </p>
-            </div>
-            <Link
-              href="/import"
-              className="text-yellow-700 dark:text-yellow-400 hover:text-yellow-800 dark:hover:text-yellow-300 text-sm font-semibold flex items-center gap-1"
-            >
-              Go to Import
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+      <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+        {/* Hero - Pilot Name & Key Stats */}
+        <section className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden">
+          {/* Background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
           </div>
-        </div>
-      )}
-
-      {/* Hero Section */}
-      <section className="relative pt-12 pb-16 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-blue-100 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl -z-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 mb-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#137fec] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#137fec]"></span>
-              </span>
-              <span className="text-xs font-semibold text-[#137fec] uppercase tracking-wide">Verified Flight Record</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-[#111418] dark:text-white leading-tight tracking-tight mb-4">
-              {pilotName.toUpperCase()}
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-2">Professional Pilot Portfolio</p>
-            {stats.firstFlightDate && stats.lastFlightDate && (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Flight history: {stats.firstFlightDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })} - {stats.lastFlightDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
-              </p>
-            )}
-            <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-6">
-              <div className="flex items-center gap-1">
-                <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <span>{stats.totalFlights} Flights Logged</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                <span>{formatHours(stats.totalFlightHours)} Total Hours</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Key Stats Grid */}
-      <section className="py-12 bg-[#f8fafc] dark:bg-[#1e293b]/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <StatCard
-              icon={<svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>}
-              label="Total Flight Hours"
-              value={formatHours(stats.totalFlightHours)}
-              subtitle={`${stats.totalFlights} flights logged`}
-              color="blue"
-            />
-            <StatCard
-              icon={<svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>}
-              label="PIC Hours"
-              value={formatHours(stats.picHours)}
-              subtitle="Pilot in command"
-              color="purple"
-            />
-            <StatCard
-              icon={<svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>}
-              label="Instructor Hours"
-              value={formatHours(stats.instructorHours)}
-              subtitle="As flight instructor"
-              color="orange"
-            />
-            <StatCard
-              icon={<svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>}
-              label="Cross-Country"
-              value={formatHours(stats.crossCountryHours)}
-              subtitle="Navigation hours"
-              color="green"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Flight Experience Overview */}
-      <section className="py-16 bg-white dark:bg-[#101922]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold text-[#111418] dark:text-white mb-4">Flight Experience Overview</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">Comprehensive breakdown of flight time categories and qualifications</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <SummaryCard 
-              title="Flight Time Categories" 
-              icon={<svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>}
-              color="blue"
-            >
-              <SummaryItem label="Single-Engine Day" value={`${formatHours(stats.singleEngineDayHours)} hrs`} />
-              <SummaryItem label="Multi-Engine Day" value={`${formatHours(stats.multiEngineDayHours)} hrs`} />
-              <SummaryItem label="Night Flying" value={`${formatHours(stats.nightFlyingHours)} hrs`} />
-              <SummaryItem label="Instrument (Actual IMC)" value={`${formatHours(stats.actualImcHours)} hrs`} />
-            </SummaryCard>
-
-            <SummaryCard 
-              title="Instrument & Advanced" 
-              icon={<svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>}
-              color="purple"
-            >
-              <SummaryItem label="Hood Time" value={`${formatHours(stats.hoodHours)} hrs`} />
-              <SummaryItem label="Simulator" value={`${formatHours(stats.simulatorHours)} hrs`} />
-              <SummaryItem label="IFR Approaches" value={String(stats.ifrApproaches)} />
-              <SummaryItem label="Day Takeoffs/Landings" value={String(stats.dayTakeoffsLandings)} />
-            </SummaryCard>
-
-            <SummaryCard 
-              title="Training & Experience" 
-              icon={<svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>}
-              color="orange"
-            >
-              <SummaryItem label="Dual Received" value={`${formatHours(stats.dualReceivedHours)} hrs`} />
-              <SummaryItem label="As Flight Instructor" value={`${formatHours(stats.instructorHours)} hrs`} />
-              <SummaryItem label="Night Takeoffs/Landings" value={String(stats.nightTakeoffsLandings)} />
-              <SummaryItem label="Cross-Country PIC" value={`${formatHours(stats.crossCountryHours)} hrs`} />
-            </SummaryCard>
-          </div>
-        </div>
-      </section>
-
-      {/* Aircraft Experience */}
-      {sortedAircraft.length > 0 && (
-        <section className="py-16 bg-[#f8fafc] dark:bg-[#1e293b]/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl font-bold text-[#111418] dark:text-white mb-4">Aircraft Experience</h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">Hours logged by aircraft type</p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {sortedAircraft.map(([name, hours]) => (
-                <div
-                  key={name}
-                  className="relative p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all group text-center"
-                >
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-4 text-[#137fec] group-hover:scale-110 transition-transform">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-                    </svg>
-                  </div>
-                  <p className="text-[#137fec] font-bold text-sm mb-1">{name}</p>
-                  <p className="text-[#111418] dark:text-white text-2xl font-black">{formatHours(hours)}</p>
-                  <p className="text-gray-500 dark:text-gray-400 text-xs">hours</p>
+          <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-3 mb-1">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold">
+                  {stats.pilotName.charAt(0).toUpperCase()}
                 </div>
-              ))}
+                <h1 className="text-2xl md:text-3xl font-black tracking-tight">{stats.pilotName}</h1>
+              </div>
+              <p className="text-blue-100 text-sm mt-2 flex items-center gap-2">
+                <span className="inline-flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {formatDate(stats.summary.firstFlightDate)} — {formatDate(stats.summary.lastFlightDate)}
+                </span>
+                {getCareerDuration() && (
+                  <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-medium">{getCareerDuration()}</span>
+                )}
+              </p>
+            </div>
+            <div className="flex gap-8">
+              <div className="text-center">
+                <p className="text-4xl md:text-5xl font-black tabular-nums">{stats.summary.totalHours.toLocaleString()}</p>
+                <p className="text-blue-100 text-xs uppercase tracking-wider mt-1">Total Hours</p>
+              </div>
+              <div className="text-center">
+                <p className="text-4xl md:text-5xl font-black tabular-nums">{stats.summary.totalFlights.toLocaleString()}</p>
+                <p className="text-blue-100 text-xs uppercase tracking-wider mt-1">Flights</p>
+              </div>
             </div>
           </div>
         </section>
-      )}
 
-      {/* CTA Section */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#137fec] rounded-3xl p-8 sm:p-12 text-center text-white relative overflow-hidden shadow-xl">
-            <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-            <h2 className="relative text-3xl sm:text-4xl font-black mb-4 tracking-tight">Export Your Official Logbook</h2>
-            <p className="relative text-blue-100 text-lg mb-8 max-w-2xl mx-auto">Generate a TCCA/EASA compliant PDF or share your digital portfolio with recruiters.</p>
-            <div className="relative flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link
-                href="/import"
-                className="w-full sm:w-auto px-8 py-3 bg-white text-[#137fec] font-bold rounded-lg hover:bg-gray-100 transition-colors shadow-lg text-center"
-              >
-                Download PDF
-              </Link>
-              <button
-                onClick={() => navigator.clipboard.writeText(window.location.href)}
-                className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-bold rounded-lg border border-blue-400 hover:bg-blue-500 transition-colors text-center"
-              >
-                Share Portfolio Link
-              </button>
+        {/* Quick Stats Grid */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <QuickStat label="PIC Hours" value={stats.timeDistribution.pic} icon="👨‍✈️" />
+          <QuickStat label="Cross Country" value={stats.timeDistribution.crossCountry} icon="🧭" />
+          <QuickStat label="Night Hours" value={stats.timeDistribution.night} icon="🌙" />
+          <QuickStat label="Instrument" value={stats.timeDistribution.instrument} icon="☁️" />
+        </section>
+
+        {/* Two Column Layout */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Time Distribution */}
+          <section className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h2 className="text-sm font-semibold text-slate-800 dark:text-white mb-4 uppercase tracking-wide">Time Distribution</h2>
+            <div className="space-y-3">
+              <TimeBar label="Single Engine" hours={stats.timeDistribution.singleEngine} total={stats.summary.totalHours} color="bg-blue-500" />
+              <TimeBar label="Multi Engine" hours={stats.timeDistribution.multiEngine} total={stats.summary.totalHours} color="bg-indigo-500" />
+              <TimeBar label="Dual Received" hours={stats.timeDistribution.dual} total={stats.summary.totalHours} color="bg-emerald-500" />
+              <TimeBar label="Instructor" hours={stats.timeDistribution.instructor} total={stats.summary.totalHours} color="bg-amber-500" />
             </div>
-          </div>
+          </section>
+
+          {/* Top Aircraft */}
+          <section className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h2 className="text-sm font-semibold text-slate-800 dark:text-white mb-4 uppercase tracking-wide">Aircraft Flown</h2>
+            <div className="space-y-2.5">
+              {stats.topAircraft.slice(0, 5).map((aircraft, i) => (
+                <div key={aircraft.aircraft} className="flex items-center gap-3">
+                  <span className="w-5 h-5 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 dark:text-slate-400">{i + 1}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-slate-800 dark:text-white truncate">{aircraft.aircraft}</span>
+                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400 ml-2">{aircraft.hours}h</span>
+                    </div>
+                    <div className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full mt-1">
+                      <div 
+                        className="h-full bg-blue-500 rounded-full transition-all" 
+                        style={{ width: `${(aircraft.hours / maxAircraftHours) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="bg-white dark:bg-[#101922] border-t border-gray-200 dark:border-gray-800 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-[#137fec]">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-                </svg>
-              </span>
-              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Generated by Digital Pilot Logbook</span>
+        {/* Monthly Trend Chart */}
+        {stats.monthlyTrend.length > 0 && (
+          <section className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h2 className="text-sm font-semibold text-slate-800 dark:text-white mb-4 uppercase tracking-wide">Recent Activity</h2>
+            <div className="flex items-end gap-1 h-24">
+              {stats.monthlyTrend.map((month, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center">
+                  <div 
+                    className="w-full bg-blue-500 rounded-t hover:bg-blue-600 transition-colors cursor-default group relative"
+                    style={{ height: `${Math.max((month.hours / maxMonthlyHours) * 100, 4)}%` }}
+                    title={`${month.month}: ${month.hours}h, ${month.flights} flights`}
+                  >
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                      {month.hours}h
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 truncate w-full text-center">{month.month.split(' ')[0]}</span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500"></span>
-              <span className="text-sm text-gray-400">Data Verified</span>
+          </section>
+        )}
+
+        {/* Yearly Progression & Airports */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Yearly Progression */}
+          <section className="md:col-span-2 bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h2 className="text-sm font-semibold text-slate-800 dark:text-white mb-4 uppercase tracking-wide">Yearly Progression</h2>
+            <div className="space-y-2">
+              {stats.yearlyProgression.map(year => (
+                <div key={year.year} className="flex items-center gap-3">
+                  <span className="w-12 text-sm font-medium text-slate-500 dark:text-slate-400">{year.year}</span>
+                  <div className="flex-1 flex gap-0.5 h-5">
+                    <div 
+                      className="bg-blue-500 rounded-l hover:bg-blue-600 transition-colors" 
+                      style={{ width: `${(year.picHours / maxYearlyHours) * 100}%` }}
+                      title={`PIC: ${year.picHours}h`}
+                    />
+                    <div 
+                      className="bg-emerald-500 rounded-r hover:bg-emerald-600 transition-colors" 
+                      style={{ width: `${(year.dualHours / maxYearlyHours) * 100}%` }}
+                      title={`Dual: ${year.dualHours}h`}
+                    />
+                  </div>
+                  <span className="w-16 text-right text-sm font-bold text-slate-800 dark:text-white">{year.totalHours}h</span>
+                </div>
+              ))}
             </div>
-          </div>
+            <div className="flex gap-4 mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 bg-blue-500 rounded" />
+                <span className="text-xs text-slate-500 dark:text-slate-400">PIC</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 bg-emerald-500 rounded" />
+                <span className="text-xs text-slate-500 dark:text-slate-400">Dual</span>
+              </div>
+            </div>
+          </section>
+
+          {/* Airports */}
+          <section className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h2 className="text-sm font-semibold text-slate-800 dark:text-white mb-4 uppercase tracking-wide">Airports</h2>
+            <div className="space-y-3">
+              {stats.topAirports.slice(0, 4).map((airport, i) => (
+                <div key={airport.airport} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-lg ${i === 0 ? 'text-amber-500' : 'text-slate-400'}`}>
+                      {i === 0 ? '🏠' : '✈️'}
+                    </span>
+                    <span className="text-sm font-mono font-bold text-slate-800 dark:text-white">{airport.airport}</span>
+                  </div>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">{airport.departures} dep</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500 dark:text-slate-400">Total Airports</span>
+                <span className="font-bold text-slate-800 dark:text-white">{stats.summary.airportsVisited}</span>
+              </div>
+            </div>
+          </section>
         </div>
-      </footer>
+
+        {/* Counts Row */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <CountCard label="Day Landings" value={stats.counts.dayTakeoffsLandings} icon="☀️" />
+          <CountCard label="Night Landings" value={stats.counts.nightTakeoffsLandings} icon="🌙" />
+          <CountCard label="IFR Approaches" value={stats.counts.ifrApproaches} icon="📡" />
+          <CountCard label="Simulator" value={`${stats.counts.simulatorHours}h`} icon="🖥️" />
+        </section>
+
+        {/* Footer Stats */}
+        <footer className="text-center py-4 text-xs text-slate-400 dark:text-slate-500">
+          <p>{stats.summary.uniqueAircraft} unique aircraft · Avg flight: {stats.summary.averageFlightDuration}h</p>
+          <p className="mt-1">Generated by Digital Pilot Logbook</p>
+        </footer>
+      </main>
     </div>
   );
 }
 
 /**
- * Stat card component for key metrics
- * Uses the skill's card patterns with icon, hover effects, and color variants
+ * Quick stat card for key metrics
  */
-function StatCard({ 
-  icon, 
-  label, 
-  value, 
-  subtitle, 
-  color 
-}: { 
-  icon: React.ReactNode;
-  label: string; 
-  value: string; 
-  subtitle: string;
-  color: 'blue' | 'purple' | 'orange' | 'green';
-}) {
-  const colorClasses = {
-    blue: 'bg-blue-50 dark:bg-blue-900/30 text-[#137fec]',
-    purple: 'bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
-    orange: 'bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400',
-    green: 'bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400',
-  };
-
+function QuickStat({ label, value, icon }: { label: string; value: number; icon: string }) {
   return (
-    <div className="relative p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all group">
-      <div className={`w-14 h-14 rounded-xl ${colorClasses[color]} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-        {icon}
+    <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
+      <div className="flex items-center justify-between">
+        <span className="text-lg">{icon}</span>
+        <span className="text-xl font-bold text-slate-800 dark:text-white">{value}</span>
       </div>
-      <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider font-medium mb-1">{label}</p>
-      <p className="text-[#111418] dark:text-white text-3xl font-black mb-1">{value}</p>
-      <p className="text-gray-500 dark:text-gray-400 text-sm">{subtitle}</p>
+      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{label}</p>
     </div>
   );
 }
 
 /**
- * Summary card container component
- * Uses the skill's feature card pattern with icon header
+ * Count card for integer counts
  */
-function SummaryCard({ 
-  title, 
-  icon, 
-  color, 
-  children 
-}: { 
-  title: string; 
-  icon: React.ReactNode;
-  color: 'blue' | 'purple' | 'orange';
-  children: React.ReactNode;
-}) {
-  const colorClasses = {
-    blue: 'bg-blue-50 dark:bg-blue-900/30 text-[#137fec]',
-    purple: 'bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
-    orange: 'bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400',
-  };
-
+function CountCard({ label, value, icon }: { label: string; value: number | string; icon: string }) {
   return (
-    <div className="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all group">
-      <div className={`w-12 h-12 rounded-xl ${colorClasses[color]} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-        {icon}
+    <div className="bg-white dark:bg-slate-800 rounded-xl p-3 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center gap-3">
+      <span className="text-lg">{icon}</span>
+      <div>
+        <p className="text-lg font-bold text-slate-800 dark:text-white">{typeof value === 'number' ? value.toLocaleString() : value}</p>
+        <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase">{label}</p>
       </div>
-      <h3 className="text-lg font-bold text-[#111418] dark:text-white mb-4">{title}</h3>
-      <div className="space-y-3">{children}</div>
     </div>
   );
 }
 
 /**
- * Summary item row component
- * Clean row layout with label and value
+ * Time distribution bar
  */
-function SummaryItem({ label, value }: { label: string; value: string }) {
+function TimeBar({ label, hours, total, color }: { label: string; hours: number; total: number; color: string }) {
+  const percentage = total > 0 ? (hours / total) * 100 : 0;
   return (
-    <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
-      <span className="text-gray-600 dark:text-gray-400 text-sm">{label}</span>
-      <span className="text-[#111418] dark:text-white font-semibold text-sm">{value}</span>
+    <div>
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-xs text-slate-600 dark:text-slate-300">{label}</span>
+        <span className="text-xs font-bold text-slate-800 dark:text-white">{hours}h</span>
+      </div>
+      <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+        <div className={`h-full ${color} rounded-full transition-all`} style={{ width: `${percentage}%` }} />
+      </div>
     </div>
   );
 }
