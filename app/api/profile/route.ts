@@ -16,6 +16,15 @@ interface SaveProfileRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    // Get user ID from session cookie
+    const userId = await getSessionUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: "No session found" },
+        { status: 401 }
+      );
+    }
+
     const body: SaveProfileRequest = await request.json();
     
     // Validate required fields
@@ -32,12 +41,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Save profile
+    // Save profile for the session user
     const saved = await savePilotProfile({
       pilotName: body.pilotName.trim(),
       homeBase: body.homeBase.trim().toUpperCase(),
       defaultInstructor: body.defaultInstructor?.trim(),
-    }, "default");
+    }, userId);
 
     return NextResponse.json({
       success: true,
@@ -63,7 +72,14 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   try {
     const sessionId = await getSessionUserId();
-    const settings = await getUserSettings("default");
+    if (!sessionId) {
+      return NextResponse.json(
+        { success: false, error: "No session found" },
+        { status: 401 }
+      );
+    }
+    
+    const settings = await getUserSettings(sessionId);
     
     if (!settings) {
       return NextResponse.json({

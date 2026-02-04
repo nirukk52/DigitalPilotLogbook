@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 /**
  * PilotProfileSetup - One-time setup modal for new users
  * Captures essential profile data before first flight entry
  * Shown when user has no flights and no profile configured
+ * Also used for editing existing profile - fetches saved data on mount
  */
 
 interface PilotProfileSetupProps {
@@ -18,7 +19,30 @@ export function PilotProfileSetup({ onComplete, onSkip }: PilotProfileSetupProps
   const [homeBase, setHomeBase] = useState('');
   const [defaultInstructor, setDefaultInstructor] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch existing profile data on mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('/api/profile');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.profile) {
+            setPilotName(data.profile.pilotName || '');
+            setHomeBase(data.profile.homeBase || '');
+            setDefaultInstructor(data.profile.defaultInstructor || '');
+          }
+        }
+      } catch {
+        // Silent fail - start with empty fields
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +81,23 @@ export function PilotProfileSetup({ onComplete, onSkip }: PilotProfileSetupProps
     }
   }, [pilotName, homeBase, defaultInstructor, onComplete]);
 
+  // Show loading state while fetching existing profile
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-8">
+          <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-purple-600 dark:text-purple-400 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+          </div>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -66,9 +107,9 @@ export function PilotProfileSetup({ onComplete, onSkip }: PilotProfileSetupProps
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
         </div>
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Welcome! Let&apos;s set up your profile</h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{pilotName ? 'Edit your profile' : 'Welcome! Let\'s set up your profile'}</h3>
         <p className="text-gray-500 dark:text-gray-400 text-sm">
-          This information helps pre-fill your flight entries. You only need to do this once.
+          This information helps pre-fill your flight entries.
         </p>
       </div>
 
@@ -157,7 +198,7 @@ export function PilotProfileSetup({ onComplete, onSkip }: PilotProfileSetupProps
                 Saving...
               </>
             ) : (
-              'Continue'
+              'Save Profile'
             )}
           </button>
         </div>

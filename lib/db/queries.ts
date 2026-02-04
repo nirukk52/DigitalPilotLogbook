@@ -295,12 +295,24 @@ export async function saveLicence(
 
 /**
  * Update an existing licence
+ * Only updates if licence belongs to the specified user
  */
 export async function updateLicence(
   licenceId: number,
   updates: Partial<Omit<NewLicence, "userId" | "createdAt">>,
   userId: string = "default"
 ): Promise<Licence> {
+  // Security: only update if licence belongs to user
+  const existing = await db
+    .select()
+    .from(licences)
+    .where(eq(licences.id, licenceId))
+    .limit(1);
+  
+  if (!existing[0] || existing[0].userId !== userId) {
+    throw new Error("Licence not found or access denied");
+  }
+  
   const now = new Date();
 
   const [updated] = await db
@@ -317,11 +329,23 @@ export async function updateLicence(
 
 /**
  * Delete a licence
+ * Only deletes if licence belongs to the specified user
  */
 export async function deleteLicence(
   licenceId: number,
   userId: string = "default"
 ): Promise<void> {
+  // Security: only delete if licence belongs to user
+  const licence = await db
+    .select()
+    .from(licences)
+    .where(eq(licences.id, licenceId))
+    .limit(1);
+  
+  if (!licence[0] || licence[0].userId !== userId) {
+    throw new Error("Licence not found or access denied");
+  }
+  
   await db
     .delete(licences)
     .where(eq(licences.id, licenceId));
@@ -453,12 +477,19 @@ export async function insertFlight(
 /**
  * Update an existing flight
  * Used when editing a previously saved flight
+ * Only updates if flight belongs to the specified user
  */
 export async function updateFlight(
   flightId: number,
   flightData: Partial<Omit<NewFlight, "userId" | "createdAt">>,
   userId: string = "default"
 ): Promise<Flight> {
+  // Security: only update if flight belongs to user
+  const existing = await getFlightById(flightId, userId);
+  if (!existing) {
+    throw new Error("Flight not found or access denied");
+  }
+  
   const now = new Date();
   
   const [updated] = await db
@@ -475,6 +506,7 @@ export async function updateFlight(
 
 /**
  * Get a single flight by ID
+ * Only returns the flight if it belongs to the specified user
  */
 export async function getFlightById(
   flightId: number,
@@ -486,16 +518,30 @@ export async function getFlightById(
     .where(eq(flights.id, flightId))
     .limit(1);
   
-  return result[0] || null;
+  const flight = result[0] || null;
+  
+  // Security check: only return if flight belongs to user
+  if (flight && flight.userId !== userId) {
+    return null;
+  }
+  
+  return flight;
 }
 
 /**
  * Delete a single flight by ID
+ * Only deletes if flight belongs to the specified user
  */
 export async function deleteFlight(
   flightId: number,
   userId: string = "default"
 ): Promise<void> {
+  // Security: only delete if flight belongs to user
+  const flight = await getFlightById(flightId, userId);
+  if (!flight) {
+    throw new Error("Flight not found or access denied");
+  }
+  
   await db
     .delete(flights)
     .where(eq(flights.id, flightId));
