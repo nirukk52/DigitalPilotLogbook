@@ -383,6 +383,32 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Portfolio Tile */}
+          <Link
+            href="/portfolio"
+            className="relative flex items-center gap-4 p-4 rounded-xl overflow-hidden group"
+          >
+            {/* Gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#137fec] via-blue-500 to-indigo-600"></div>
+            {/* Shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            {/* Content */}
+            <div className="relative w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center text-white flex-shrink-0">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div className="relative flex-1 min-w-0">
+              <h3 className="text-base font-bold text-white">Portfolio</h3>
+              <p className="text-xs text-white/80 truncate">Hours, statistics & trends</p>
+            </div>
+            <div className="relative text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </Link>
+
           {/* Recent Flights */}
           {!isLoadingFlights && recentFlights.length > 0 && (
             <div>
