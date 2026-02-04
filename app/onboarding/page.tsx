@@ -58,7 +58,7 @@ export default function OnboardingPage() {
         if (data.progress) {
           if (data.progress.isCompleted) {
             // Already completed, redirect to app
-            router.push("/overview");
+            router.push("/home");
             return;
           }
           // Clamp step to valid range (0-6)
@@ -90,7 +90,7 @@ export default function OnboardingPage() {
         updateOnboardingProgress(6, true);
       });
 
-      router.push("/overview");
+      router.push("/home");
     }
   };
 

@@ -2,41 +2,105 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { PilotPortfolioStats } from "@/lib/export/portfolio-generator";
+
+/**
+ * Portfolio stats structure from API
+ * Matches the database-calculated stats
+ */
+interface PortfolioStats {
+  totalFlightHours: number;
+  picHours: number;
+  instructorHours: number;
+  dualReceivedHours: number;
+  singleEngineDayHours: number;
+  singleEngineNightHours: number;
+  multiEngineDayHours: number;
+  multiEngineNightHours: number;
+  crossCountryHours: number;
+  nightFlyingHours: number;
+  actualImcHours: number;
+  hoodHours: number;
+  simulatorHours: number;
+  ifrApproaches: number;
+  totalFlights: number;
+  dayTakeoffsLandings: number;
+  nightTakeoffsLandings: number;
+  aircraftTypes: Map<string, number>;
+  firstFlightDate: Date | null;
+  lastFlightDate: Date | null;
+}
 
 /**
  * Portfolio Page - Displays pilot portfolio with flight statistics
- * Reads data from sessionStorage set by the import page
+ * Fetches data from database API for consistency with Recent Flights
+ * Falls back to sessionStorage for import preview mode
  */
 export default function PortfolioPage() {
-  const [stats, setStats] = useState<PilotPortfolioStats | null>(null);
+  const [stats, setStats] = useState<PortfolioStats | null>(null);
   const [pilotName, setPilotName] = useState<string>("Pilot");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
 
   useEffect(() => {
-    // Read portfolio data from sessionStorage
-    const storedData = sessionStorage.getItem("portfolioData");
-    if (storedData) {
+    async function loadPortfolioData() {
       try {
-        const data = JSON.parse(storedData);
-        // Convert date strings back to Date objects
-        if (data.stats.firstFlightDate) {
-          data.stats.firstFlightDate = new Date(data.stats.firstFlightDate);
+        // First, try to fetch from database API (source of truth)
+        const response = await fetch('/api/portfolio');
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Check if there are any flights in the database
+          if (data.totalFlights > 0) {
+            // Convert dates and aircraftTypes from API response
+            const parsedStats: PortfolioStats = {
+              ...data,
+              firstFlightDate: data.firstFlightDate ? new Date(data.firstFlightDate) : null,
+              lastFlightDate: data.lastFlightDate ? new Date(data.lastFlightDate) : null,
+              aircraftTypes: new Map(data.aircraftTypes || []),
+            };
+            setStats(parsedStats);
+            setPilotName(data.pilotName || "Pilot");
+            setLoading(false);
+            return;
+          }
         }
-        if (data.stats.lastFlightDate) {
-          data.stats.lastFlightDate = new Date(data.stats.lastFlightDate);
+
+        // Fallback: Check sessionStorage for import preview mode
+        // This allows previewing portfolio before saving to database
+        const storedData = sessionStorage.getItem("portfolioData");
+        if (storedData) {
+          const data = JSON.parse(storedData);
+          // Convert date strings back to Date objects
+          if (data.stats.firstFlightDate) {
+            data.stats.firstFlightDate = new Date(data.stats.firstFlightDate);
+          }
+          if (data.stats.lastFlightDate) {
+            data.stats.lastFlightDate = new Date(data.stats.lastFlightDate);
+          }
+          // Convert aircraftTypes from array back to Map
+          if (data.stats.aircraftTypes) {
+            data.stats.aircraftTypes = new Map(data.stats.aircraftTypes);
+          }
+          setStats(data.stats);
+          setPilotName(data.pilotName || "Pilot");
+          setIsPreviewMode(true);
+          setLoading(false);
+          return;
         }
-        // Convert aircraftTypes from array back to Map
-        if (data.stats.aircraftTypes) {
-          data.stats.aircraftTypes = new Map(data.stats.aircraftTypes);
-        }
-        setStats(data.stats);
-        setPilotName(data.pilotName || "Pilot");
+
+        // No data available
+        setStats(null);
       } catch (e) {
-        console.error("Failed to parse portfolio data:", e);
+        console.error("Failed to load portfolio data:", e);
+        setError("Failed to load portfolio data");
+      } finally {
+        setLoading(false);
       }
     }
-    setLoading(false);
+
+    loadPortfolioData();
   }, []);
 
   if (loading) {
@@ -47,16 +111,41 @@ export default function PortfolioPage() {
     );
   }
 
-  if (!stats) {
+  if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0f0f23] via-[#16213e] to-[#1a1a2e] flex flex-col items-center justify-center gap-4">
-        <p className="text-white/60">No portfolio data found</p>
+        <p className="text-red-400">{error}</p>
         <Link
-          href="/import"
+          href="/home"
           className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
         >
-          Go to Import
+          Go to Home
         </Link>
+      </div>
+    );
+  }
+
+  if (!stats || stats.totalFlights === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0f0f23] via-[#16213e] to-[#1a1a2e] flex flex-col items-center justify-center gap-4">
+        <div className="text-center">
+          <p className="text-white/60 text-lg mb-2">No flight data found</p>
+          <p className="text-white/40 text-sm">Add flights or import your logbook to see your portfolio</p>
+        </div>
+        <div className="flex gap-4 mt-4">
+          <Link
+            href="/home"
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+          >
+            Go to Home
+          </Link>
+          <Link
+            href="/import"
+            className="px-4 py-2 bg-white/10 hover:bg-white/15 text-white rounded-lg transition-colors border border-white/20"
+          >
+            Import Logbook
+          </Link>
+        </div>
       </div>
     );
   }
@@ -73,16 +162,38 @@ export default function PortfolioPage() {
       {/* Header */}
       <header className="h-14 border-b border-white/5 flex items-center px-6">
         <Link
-          href="/import"
+          href="/home"
           className="text-white/60 hover:text-white/80 transition-colors flex items-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Import
+          Back to Home
         </Link>
         <h1 className="text-white text-lg font-medium ml-4">Pilot Portfolio</h1>
+        {isPreviewMode && (
+          <span className="ml-4 px-2 py-1 text-xs bg-yellow-500/20 text-yellow-400 rounded-full border border-yellow-500/30">
+            Preview Mode
+          </span>
+        )}
       </header>
+
+      {/* Preview Mode Banner */}
+      {isPreviewMode && (
+        <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-6 py-3">
+          <div className="max-w-5xl mx-auto flex items-center justify-between">
+            <p className="text-yellow-400 text-sm">
+              This is a preview from your import. Save to logbook to make it permanent.
+            </p>
+            <Link
+              href="/import"
+              className="text-yellow-400 hover:text-yellow-300 text-sm font-medium"
+            >
+              Go to Import →
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="max-w-5xl mx-auto py-8 px-6">

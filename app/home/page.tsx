@@ -7,7 +7,7 @@ import { PilotProfileSetup } from "@/app/components/flights/PilotProfileSetup";
 import type { FlightRole, FlightTag } from "@/lib/flights/types";
 
 /**
- * Main app overview/home page shown after onboarding
+ * Main app home page shown after onboarding
  * Full-width dashboard with getting started options for new users
  * Includes quick flight entry modal, profile setup, and recent flights
  */
@@ -26,7 +26,7 @@ interface Flight {
   simulator: number | null;
 }
 
-export default function OverviewPage() {
+export default function HomePage() {
   const [showAddFlightModal, setShowAddFlightModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);

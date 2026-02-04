@@ -25,6 +25,12 @@ export const userSettings = pgTable("user_settings", {
   authorityName: text("authority_name").notNull(),
   decimalFormat: boolean("decimal_format").notNull().default(true),
   timezone: text("timezone").notNull().default("UTC"),
+  
+  // Pilot profile fields for quick flight entry
+  pilotName: text("pilot_name"),           // Pilot's full name for auto-fill in PIC field
+  homeBase: text("home_base"),             // ICAO code of home airport (e.g., "CZBB")
+  defaultInstructor: text("default_instructor"), // Name of instructor for Student role flights
+  
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   version: integer("version").notNull().default(1),

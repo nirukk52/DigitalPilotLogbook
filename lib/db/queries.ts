@@ -2,7 +2,7 @@
  * Database queries for onboarding settings
  * Follows db-design-guidelines.md with audit trail logging
  */
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 import { db } from "./index";
 import {
   userSettings,
@@ -10,11 +10,14 @@ import {
   onboardingProgress,
   personalizationSettings,
   licences,
+  flights,
   type UserSettings,
   type OnboardingProgress,
   type PersonalizationSettings,
   type Licence,
   type NewLicence,
+  type Flight,
+  type NewFlight,
 } from "./schema";
 
 /**
@@ -322,4 +325,275 @@ export async function deleteLicence(
   await db
     .delete(licences)
     .where(eq(licences.id, licenceId));
+}
+
+// ============================================================================
+// Flight Queries
+// ============================================================================
+
+/**
+ * Get all flights for a user, sorted by date ascending
+ */
+export async function getFlights(
+  userId: string = "default"
+): Promise<Flight[]> {
+  const result = await db
+    .select()
+    .from(flights)
+    .where(eq(flights.userId, userId))
+    .orderBy(asc(flights.flightDate));
+
+  return result;
+}
+
+/**
+ * Get flight count for a user
+ */
+export async function getFlightCount(
+  userId: string = "default"
+): Promise<number> {
+  const result = await db
+    .select()
+    .from(flights)
+    .where(eq(flights.userId, userId));
+
+  return result.length;
+}
+
+/**
+ * Save flights for a user - replaces all existing flights
+ * Uses delete + batched insert strategy for Neon serverless compatibility
+ * Batches inserts to avoid "value too large to transmit" errors
+ */
+export async function saveFlights(
+  flightData: Omit<NewFlight, "userId" | "createdAt" | "updatedAt" | "importedAt">[],
+  userId: string = "default"
+): Promise<{ inserted: number; deleted: number }> {
+  const now = new Date();
+  const BATCH_SIZE = 50; // Neon has limits on query size
+
+  // Delete existing flights for this user
+  const existingFlights = await getFlights(userId);
+  const deletedCount = existingFlights.length;
+
+  if (deletedCount > 0) {
+    await db
+      .delete(flights)
+      .where(eq(flights.userId, userId));
+  }
+
+  // Insert new flights in batches
+  if (flightData.length > 0) {
+    const flightsToInsert = flightData.map((flight) => ({
+      ...flight,
+      userId,
+      importedAt: now,
+      createdAt: now,
+      updatedAt: now,
+    }));
+
+    // Split into batches and insert sequentially
+    for (let i = 0; i < flightsToInsert.length; i += BATCH_SIZE) {
+      const batch = flightsToInsert.slice(i, i + BATCH_SIZE);
+      await db.insert(flights).values(batch);
+    }
+  }
+
+  return {
+    inserted: flightData.length,
+    deleted: deletedCount,
+  };
+}
+
+/**
+ * Delete all flights for a user
+ */
+export async function deleteAllFlights(
+  userId: string = "default"
+): Promise<number> {
+  const existingFlights = await getFlights(userId);
+  const deletedCount = existingFlights.length;
+
+  if (deletedCount > 0) {
+    await db
+      .delete(flights)
+      .where(eq(flights.userId, userId));
+  }
+
+  return deletedCount;
+}
+
+// ============================================================================
+// Quick Flight Entry Queries (T008-T011)
+// ============================================================================
+
+/**
+ * Insert a single flight (not replace all)
+ * Used by quick entry - adds to existing flights
+ */
+export async function insertFlight(
+  flightData: Omit<NewFlight, "userId" | "createdAt" | "updatedAt">,
+  userId: string = "default"
+): Promise<Flight> {
+  const now = new Date();
+  
+  const [inserted] = await db
+    .insert(flights)
+    .values({
+      ...flightData,
+      userId,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .returning();
+  
+  return inserted;
+}
+
+/**
+ * Update an existing flight
+ * Used when editing a previously saved flight
+ */
+export async function updateFlight(
+  flightId: number,
+  flightData: Partial<Omit<NewFlight, "userId" | "createdAt">>,
+  userId: string = "default"
+): Promise<Flight> {
+  const now = new Date();
+  
+  const [updated] = await db
+    .update(flights)
+    .set({
+      ...flightData,
+      updatedAt: now,
+    })
+    .where(eq(flights.id, flightId))
+    .returning();
+  
+  return updated;
+}
+
+/**
+ * Get a single flight by ID
+ */
+export async function getFlightById(
+  flightId: number,
+  userId: string = "default"
+): Promise<Flight | null> {
+  const result = await db
+    .select()
+    .from(flights)
+    .where(eq(flights.id, flightId))
+    .limit(1);
+  
+  return result[0] || null;
+}
+
+/**
+ * Delete a single flight by ID
+ */
+export async function deleteFlight(
+  flightId: number,
+  userId: string = "default"
+): Promise<void> {
+  await db
+    .delete(flights)
+    .where(eq(flights.id, flightId));
+}
+
+/**
+ * Get the most recent flight for smart defaults
+ */
+export async function getLastFlight(
+  userId: string = "default"
+): Promise<Flight | null> {
+  const result = await db
+    .select()
+    .from(flights)
+    .where(eq(flights.userId, userId))
+    .orderBy(desc(flights.flightDate), desc(flights.createdAt))
+    .limit(1);
+  
+  return result[0] || null;
+}
+
+/**
+ * Get unique aircraft and registrations for autocomplete
+ */
+export async function getFlightAutocompleteData(
+  userId: string = "default"
+): Promise<{
+  aircraft: string[];
+  registrationsByAircraft: Record<string, string[]>;
+}> {
+  const allFlights = await db
+    .select({
+      aircraft: flights.aircraftMakeModel,
+      registration: flights.registration,
+    })
+    .from(flights)
+    .where(eq(flights.userId, userId));
+  
+  const aircraftSet = new Set<string>();
+  const registrationsByAircraft: Record<string, string[]> = {};
+  
+  for (const f of allFlights) {
+    aircraftSet.add(f.aircraft);
+    if (!registrationsByAircraft[f.aircraft]) {
+      registrationsByAircraft[f.aircraft] = [];
+    }
+    if (!registrationsByAircraft[f.aircraft].includes(f.registration)) {
+      registrationsByAircraft[f.aircraft].push(f.registration);
+    }
+  }
+  
+  return {
+    aircraft: Array.from(aircraftSet),
+    registrationsByAircraft,
+  };
+}
+
+/**
+ * Save pilot profile fields to user settings
+ * Used during first-time setup for quick flight entry
+ */
+export async function savePilotProfile(
+  profile: {
+    pilotName: string;
+    homeBase: string;
+    defaultInstructor?: string;
+  },
+  userId: string = "default"
+): Promise<UserSettings> {
+  const existing = await getUserSettings(userId);
+  const now = new Date();
+  
+  if (existing) {
+    // Update existing settings with profile fields
+    const [updated] = await db
+      .update(userSettings)
+      .set({
+        pilotName: profile.pilotName,
+        homeBase: profile.homeBase,
+        defaultInstructor: profile.defaultInstructor ?? null,
+        updatedAt: now,
+      })
+      .where(eq(userSettings.id, existing.id))
+      .returning();
+    
+    return updated;
+  } else {
+    // Create minimal settings with profile - requires authority from onboarding
+    throw new Error("User settings must be created during onboarding before setting pilot profile");
+  }
+}
+
+/**
+ * Check if user has pilot profile set up
+ */
+export async function hasPilotProfile(
+  userId: string = "default"
+): Promise<boolean> {
+  const settings = await getUserSettings(userId);
+  return !!(settings?.pilotName && settings?.homeBase);
 }

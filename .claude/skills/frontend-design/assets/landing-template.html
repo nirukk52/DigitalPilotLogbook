@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Pilot Logbook - The Missing Link for your Excel Logbook</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#ffffff",
+                        "background-dark": "#101922",
+                        "slate-light": "#f8fafc",
+                        "slate-dark": "#1e293b"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-[#111418] dark:text-white antialiased overflow-x-hidden">
+<header class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-2">
+<div class="text-primary">
+<span class="material-symbols-outlined !text-[32px]">flight_takeoff</span>
+</div>
+<span class="text-xl font-bold tracking-tight text-[#111418] dark:text-white">Digital Pilot Logbook</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#how-it-works">How it Works</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#import-source">Excel Pilot Logbook</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#features">Features</a>
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#testimonials">Testimonials</a>
+</nav>
+<div class="flex items-center gap-3">
+<a class="hidden sm:flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors" href="/home">
+                        Log In
+                    </a>
+<a class="flex items-center justify-center px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-blue-600 rounded-lg transition-colors shadow-sm hover:shadow-md" href="/home">
+                        Import Data
+                    </a>
+</div>
+</div>
+</div>
+</header>
+<section class="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+<div class="flex flex-col gap-6 text-left max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 w-fit">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="text-xs font-semibold text-primary uppercase tracking-wide">Compatible with excelpilotlogbook.com</span>
+</div>
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-[#111418] dark:text-white leading-[1.1] tracking-tight">
+                        The Missing Link for <br/>
+<span class="text-primary">Your Excel Logbook.</span>
+</h1>
+<p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
+                        Transform your raw Excel data into TCCA/EASA compliant PDFs and a modern digital pilot portfolio. The perfect companion for excelpilotlogbook.com users.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-2">
+<a href="/home" class="flex items-center justify-center h-12 px-6 rounded-lg bg-primary text-white text-base font-bold hover:bg-blue-600 transition-all shadow-lg hover:shadow-primary/25 gap-2">
+<span>Import your Excel</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+<a href="/home" class="flex items-center justify-center h-12 px-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white text-base font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors gap-2">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+<span>View Sample Portfolio</span>
+</a>
+</div>
+<div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-green-600">check_circle</span>
+<span>TCCA &amp; EASA Compliant</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-green-600">check_circle</span>
+<span>Advanced Flight Analytics</span>
+</div>
+</div>
+</div>
+<div class="relative lg:h-auto w-full flex justify-center lg:justify-end">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-blue-100 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl -z-10"></div>
+<div class="relative rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 w-full max-w-md aspect-[4/3] group">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Excel spreadsheet showing flight data transforming into a digital document" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAkX9_oZVaPo4n_Fc7CvSyyGJCJU8uPnzF4UCTYVfhBBzuvcLu-6oYzBHUD-Ll3BM49eWTZWWC9mt0M4Uhk5zfYX7uKWpkhk09wri8HJUfIjSLNQJvZ5RXH_5Bj1ojorfTqgUv5SjVz1kXDFq_hyQa4ssfsmNLtN1VxH8kr-rtEkKzERlzjMNlGR3BKBST-zMfl31WbtBBmzcZ-GBDs7cWUFe-Bp9n_akbNyGFu_5D3X-hKwupQOl2wNdrQkcU_-Lmkn8OoRZE-FA-X");'></div>
+<div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/40 to-transparent dark:from-gray-900/90 dark:via-gray-900/40 z-10"></div>
+<div class="absolute bottom-6 left-6 z-20 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 flex items-center gap-4 max-w-[280px]">
+<div class="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 shrink-0">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900 dark:text-white">Portfolio Generated</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">PDF &amp; Web Profile Ready</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 bg-white dark:bg-background-dark border-y border-gray-100 dark:border-gray-800 overflow-hidden" id="import-source">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col lg:flex-row items-center gap-16">
+<div class="flex-1 order-2 lg:order-1 relative">
+<div class="relative w-full max-w-lg mx-auto p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+<div class="flex items-center justify-between mb-8">
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800/30">
+<span class="material-symbols-outlined text-3xl">table_view</span>
+</div>
+<span class="text-xs font-semibold text-gray-500">Excel Pilot Logbook</span>
+</div>
+<div class="flex-1 px-4 flex flex-col items-center">
+<div class="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden relative">
+<div class="absolute inset-0 bg-primary w-1/2 animate-[shimmer_2s_infinite]"></div>
+</div>
+<span class="text-[10px] text-gray-400 mt-2 uppercase tracking-widest">Seamless Sync</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-primary border border-blue-200 dark:border-blue-800/30">
+<span class="material-symbols-outlined text-3xl">flight_takeoff</span>
+</div>
+<span class="text-xs font-semibold text-gray-500">Digital Pilot Profile</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm space-y-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+<p class="text-sm text-gray-600 dark:text-gray-300">Importing flight hours...</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+<p class="text-sm text-gray-600 dark:text-gray-300">Validating aircraft types...</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+<p class="text-sm text-gray-600 dark:text-gray-300">Generating compliance report...</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<p class="text-sm font-medium text-gray-900 dark:text-white">Ready for Export</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 order-1 lg:order-2">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 dark:bg-green-900/20 w-fit mb-6">
+<span class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">Direct Integration</span>
+</div>
+<h2 class="text-3xl font-bold text-[#111418] dark:text-white sm:text-4xl mb-6">Import directly from Excel Pilot Logbook</h2>
+<p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+                    We've built a dedicated parser for the popular excelpilotlogbook.com format. Simply upload your spreadsheet, and watch as your raw rows and columns are instantly transformed into a verified, professional aviation career portfolio.
+                </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<div class="mt-1 h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-sm font-bold">bolt</span>
+</div>
+<div>
+<h4 class="font-bold text-[#111418] dark:text-white">Instant Recognition</h4>
+<p class="text-sm text-gray-600 dark:text-gray-400">No column mapping required. We recognize the standard template automatically.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<div class="mt-1 h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-sm font-bold">auto_fix_high</span>
+</div>
+<div>
+<h4 class="font-bold text-[#111418] dark:text-white">Smart Cleanup</h4>
+<p class="text-sm text-gray-600 dark:text-gray-400">We detect and flag common data entry errors before they make it to your official log.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 bg-slate-light dark:bg-slate-dark/50" id="features">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="text-3xl font-bold text-[#111418] dark:text-white sm:text-4xl mb-4">Why we are the industry standard</h2>
+<p class="text-lg text-gray-600 dark:text-gray-300">More than just a PDF converter. We provide the complete digital ecosystem for modern pilots.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all group">
+<div class="w-14 h-14 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+</div>
+<h3 class="text-xl font-bold text-[#111418] dark:text-white mb-3">Professional PDF Export</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">
+            Generate pixel-perfect, fully compliant logbooks for regulatory bodies.
+        </p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">TCCA Compliant</span>
+<span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">EASA Compliant</span>
+</div>
+</div>
+<div class="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all group">
+<div class="w-14 h-14 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center mb-6 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">badge</span>
+</div>
+<h3 class="text-xl font-bold text-[#111418] dark:text-white mb-3">Modern Pilot Portfolio</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">
+            Go beyond the logbook. Build a stunning digital resume and visual career timeline to share with recruiters.
+        </p>
+<ul class="text-sm text-gray-500 space-y-1">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>Shareable Web Link</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>Visual Route Maps</li>
+</ul>
+</div>
+<div class="relative p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all group">
+<div class="w-14 h-14 rounded-xl bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center mb-6 text-orange-600 dark:text-orange-400 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">analytics</span>
+</div>
+<h3 class="text-xl font-bold text-[#111418] dark:text-white mb-3">Advanced Flight Analysis</h3>
+<p class="text-gray-600 dark:text-gray-400 mb-4">
+            Deep dive into your flying history. Analyze currency, aircraft type breakdowns, and landing proficiency.
+        </p>
+<ul class="text-sm text-gray-500 space-y-1">
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Currency Tracking</li>
+<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>Interactive Charts</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 bg-background-light dark:bg-background-dark" id="how-it-works">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="text-3xl font-bold text-[#111418] dark:text-white sm:text-4xl mb-4">Simple 3-step process</h2>
+<p class="text-lg text-gray-600 dark:text-gray-300">We've streamlined the workflow so you can spend less time formatting and more time flying.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 relative">
+<div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gray-200 dark:bg-gray-700 -z-10"></div>
+<div class="relative flex flex-col items-center text-center group">
+<div class="w-24 h-24 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-center mb-6 group-hover:border-primary/50 group-hover:shadow-md transition-all">
+<span class="material-symbols-outlined text-[40px] text-primary">cloud_upload</span>
+</div>
+<h3 class="text-xl font-bold text-[#111418] dark:text-white mb-3">1. Upload Excel</h3>
+<p class="text-gray-600 dark:text-gray-400">Drag &amp; drop your Excel Logbook file. We support .xls, .xlsx, and .csv.</p>
+</div>
+<div class="relative flex flex-col items-center text-center group">
+<div class="w-24 h-24 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-center mb-6 group-hover:border-primary/50 group-hover:shadow-md transition-all">
+<span class="material-symbols-outlined text-[40px] text-primary">person_check</span>
+</div>
+<h3 class="text-xl font-bold text-[#111418] dark:text-white mb-3">2. Build Profile</h3>
+<p class="text-gray-600 dark:text-gray-400">Customize your pilot portfolio with photos, bio, and verify your flight totals.</p>
+</div>
+<div class="relative flex flex-col items-center text-center group">
+<div class="w-24 h-24 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm flex items-center justify-center mb-6 group-hover:border-primary/50 group-hover:shadow-md transition-all">
+<span class="material-symbols-outlined text-[40px] text-primary">download</span>
+</div>
+<h3 class="text-xl font-bold text-[#111418] dark:text-white mb-3">3. Export &amp; Share</h3>
+<p class="text-gray-600 dark:text-gray-400">Download your signed PDF logbook or share your private portfolio link.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 bg-slate-light dark:bg-slate-dark/50 border-y border-gray-100 dark:border-gray-800" id="testimonials">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-[#111418] dark:text-white mb-12">Trusted by pilots at major carriers</h2>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-full">
+<div class="flex gap-1 text-yellow-400 mb-4">
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+</div>
+<p class="text-gray-700 dark:text-gray-300 italic mb-6 flex-grow">"The Excel Pilot Logbook integration worked flawlessly. I had my entire career imported and a PDF generated in under 5 minutes."</p>
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 rounded-full bg-gray-200 overflow-hidden">
+<img alt="Portrait of Sarah J" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWY-W09txuHRfQMkb_KglrhsAfb5FqB70L-uBSXZBo03OIBsEdPJnY9AEBZYLxnYh10yT4Y2-T9dFSvuJjjLFacrsRAjplG0Y5PCPL6P4bcZTEitgCEZ5uYofHywVOiU7-KkIDspxJnMEW5U-z37S_u1UIll5cly43F-xsGVS46u_EK9rCtzB3dXhFaHbHOZ4mGH7OUFG4A6aramEnruVhQCBik8PN39kSuhRucgM0nhWPZNCE2zXRTYreUxcsLM73L7qXwBxFJpxz"/>
+</div>
+<div>
+<p class="font-bold text-[#111418] dark:text-white">Capt. Sarah J.</p>
+<p class="text-sm text-gray-500">B777 Captain</p>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-full">
+<div class="flex gap-1 text-yellow-400 mb-4">
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+</div>
+<p class="text-gray-700 dark:text-gray-300 italic mb-6 flex-grow">"The portfolio builder sets this apart. Being able to send a link to recruiters that visualizes my experience was a game changer."</p>
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 rounded-full bg-gray-200 overflow-hidden">
+<img alt="Portrait of Michael R" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0FICvi4kToMAA4tR1UpA6HIj9A73Ps9QHmJ8S-rgq6Y61D5fHQFJ3kg9x9vVwpGEtsUfGfcyJywVaQ659exRIsoOW9p-QxPNYDndtSsZacyCZjpmzXutSboUw6johOi-Qzcf12oAyr1VwR3GDwGtGNNBEFEq49Uobhh5_0HwjWN8L3rzLygqFFcBayPu-_rAz5JEevIgjpXae8QSkIMQf1iSLU5f60kZQ3hJVBOct0jQ2U2MAd9bn76T5JVfJoqCPjuCwJHwr11v3"/>
+</div>
+<div>
+<p class="font-bold text-[#111418] dark:text-white">Michael R.</p>
+<p class="text-sm text-gray-500">First Officer, Regional</p>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-full">
+<div class="flex gap-1 text-yellow-400 mb-4">
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+<span class="material-symbols-outlined fill-current text-sm">star</span>
+</div>
+<p class="text-gray-700 dark:text-gray-300 italic mb-6 flex-grow">"Finally a modern solution. No more fighting with printer settings or Excel formulas breaking on me."</p>
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 rounded-full bg-gray-200 overflow-hidden">
+<img alt="Portrait of David L" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKPgeCvMrWEmrfLRIBKmsn2T9WWkluHEV8wEQI9k7t0hBAMCWPU9UU2HExWoa4EMkowF317SxQkT-N7INrflKRMbkkhYXp5xj5vRS0OtL7i7Qbu--oIAM9sZ6vJK6jAokXcv8uumVJrcSzEJeNLoUB0cZvRB94REmxgc6oP62U3pRdCjP1AK6qzONVUca0aUrzavY0Syse7FAnhSIJ5D4njvrIMwMhf74gsTG1cEJ8U7ygcRcMaoYnknJT6QdYxkonhgECR2IS62Os"/>
+</div>
+<div>
+<p class="font-bold text-[#111418] dark:text-white">David L.</p>
+<p class="text-sm text-gray-500">Chief Flight Instructor</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-primary rounded-3xl p-8 sm:p-12 text-center text-white relative overflow-hidden shadow-xl">
+<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+<h2 class="relative text-3xl sm:text-4xl font-black mb-4 tracking-tight">Ready to modernize your flight history?</h2>
+<p class="relative text-blue-100 text-lg mb-8 max-w-2xl mx-auto">Join thousands of pilots who have switched to the modern standard. Get started with your Excel file today.</p>
+<div class="relative flex flex-col sm:flex-row gap-4 justify-center items-center">
+<a href="/home" class="w-full sm:w-auto px-8 py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition-colors shadow-lg text-center">
+                        Import Excel File
+                    </a>
+<a href="/home" class="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-bold rounded-lg border border-blue-400 hover:bg-blue-500 transition-colors text-center">
+                        View Sample PDF
+                    </a>
+</div>
+<p class="relative mt-6 text-sm text-blue-200">Free to preview. Pay only when you export.</p>
+</div>
+</div>
+</section>
+<footer class="bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 pt-16 pb-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+<div class="col-span-2 lg:col-span-2">
+<div class="flex items-center gap-2 mb-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-[28px]">flight_takeoff</span>
+</div>
+<span class="text-xl font-bold text-[#111418] dark:text-white">Digital Pilot Logbook</span>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 max-w-xs mb-6">
+                        The gold standard for digital flight log conversion and management. Secure, accurate, and compliant.
+                    </p>
+<div class="flex gap-4">
+<a class="text-gray-400 hover:text-primary transition-colors" href="#">
+<span class="sr-only">Twitter</span>
+<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
+</a>
+<a class="text-gray-400 hover:text-primary transition-colors" href="#">
+<span class="sr-only">LinkedIn</span>
+<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-[#111418] dark:text-white uppercase tracking-wider mb-4">Product</h3>
+<ul class="space-y-3">
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Features</a></li>
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Pricing</a></li>
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Import Guide</a></li>
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">TCCA Standards</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-[#111418] dark:text-white uppercase tracking-wider mb-4">Support</h3>
+<ul class="space-y-3">
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Help Center</a></li>
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Contact Us</a></li>
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Status</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-[#111418] dark:text-white uppercase tracking-wider mb-4">Legal</h3>
+<ul class="space-y-3">
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Privacy</a></li>
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Terms</a></li>
+<li><a class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors" href="#">Security</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-gray-400">© 2024 Digital Pilot Logbook. All rights reserved.</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm text-gray-400">Systems Operational</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
