@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const fileName = `Logbook_${dateStr}.pdf`;
     
     // Return PDF as download
-    return new NextResponse(pdfBytes, {
+    return new Response(Buffer.from(pdfBytes), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

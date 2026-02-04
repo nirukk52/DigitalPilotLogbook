@@ -6,6 +6,7 @@
 
 import { NextResponse } from "next/server";
 import { getFlights, getUserSettings } from "@/lib/db/queries";
+import { getSessionUserId } from "@/lib/session";
 import type { Flight } from "@/lib/db/schema";
 
 /**
@@ -137,11 +138,20 @@ function calculateStatsFromFlights(flights: Flight[]): Omit<PortfolioStatsRespon
  */
 export async function GET() {
   try {
-    // Fetch flights from database
-    const flights = await getFlights("default");
+    // Get user ID from session cookie
+    const userId = await getSessionUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "No session found" },
+        { status: 401 }
+      );
+    }
+
+    // Fetch flights from database for the session user
+    const flights = await getFlights(userId);
     
     // Get pilot name from user settings
-    const userSettings = await getUserSettings("default");
+    const userSettings = await getUserSettings(userId);
     const pilotName = userSettings?.pilotName || "Pilot";
 
     // Calculate stats

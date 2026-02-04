@@ -129,10 +129,10 @@ function mapRowToFlight(row: ExcelRow, rowNumber: number): ParsedFlight | null {
     
     if (isTimeField(fieldName)) {
       const numValue = parseNumber(cellValue);
-      (flight as Record<string, unknown>)[fieldName] = numValue;
+      (flight as unknown as Record<string, unknown>)[fieldName] = numValue;
     } else if (isCountField(fieldName)) {
       const intValue = parseInteger(cellValue);
-      (flight as Record<string, unknown>)[fieldName] = intValue;
+      (flight as unknown as Record<string, unknown>)[fieldName] = intValue;
     }
   }
   
@@ -255,7 +255,7 @@ function calculateFlightHours(flight: ParsedFlight): number {
     flight.simulator,
   ];
   
-  const total = values.reduce((sum, val) => sum + (val ?? 0), 0);
+  const total = values.reduce<number>((sum, val) => sum + (val ?? 0), 0);
   
   // Round to 1 decimal place
   return Math.round(total * 10) / 10;
