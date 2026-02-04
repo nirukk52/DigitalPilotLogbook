@@ -280,29 +280,6 @@ export default function PortfolioPage() {
           </section>
         </div>
 
-        {/* Monthly Trend Chart */}
-        {stats.monthlyTrend.length > 0 && (
-          <section className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
-            <h2 className="text-sm font-semibold text-slate-800 dark:text-white mb-4 uppercase tracking-wide">Recent Activity</h2>
-            <div className="flex items-end gap-1 h-24">
-              {stats.monthlyTrend.map((month, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center">
-                  <div 
-                    className="w-full bg-blue-500 rounded-t hover:bg-blue-600 transition-colors cursor-default group relative"
-                    style={{ height: `${Math.max((month.hours / maxMonthlyHours) * 100, 4)}%` }}
-                    title={`${month.month}: ${month.hours}h, ${month.flights} flights`}
-                  >
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                      {month.hours}h
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-slate-400 mt-1 truncate w-full text-center">{month.month.split(' ')[0]}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* Yearly Progression & Airports */}
         <div className="grid md:grid-cols-3 gap-6">
           {/* Yearly Progression */}
@@ -372,6 +349,29 @@ export default function PortfolioPage() {
           <CountCard label="IFR Approaches" value={stats.counts.ifrApproaches} icon="📡" />
           <CountCard label="Simulator" value={`${stats.counts.simulatorHours}h`} icon="🖥️" />
         </section>
+
+        {/* Monthly Trend Chart - Recent Activity */}
+        {stats.monthlyTrend.length > 0 && (
+          <section className="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h2 className="text-sm font-semibold text-slate-800 dark:text-white mb-4 uppercase tracking-wide">Recent Activity</h2>
+            <div className="flex items-end gap-1 h-24">
+              {stats.monthlyTrend.map((month, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center">
+                  <div 
+                    className="w-full bg-blue-500 rounded-t hover:bg-blue-600 transition-colors cursor-default group relative"
+                    style={{ height: `${Math.max((month.hours / maxMonthlyHours) * 100, 4)}%` }}
+                    title={`${month.month}: ${month.hours}h, ${month.flights} flights`}
+                  >
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                      {month.hours}h
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 truncate w-full text-center">{month.month.split(' ')[0]}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Footer Stats */}
         <footer className="text-center py-4 text-xs text-slate-400 dark:text-slate-500">
