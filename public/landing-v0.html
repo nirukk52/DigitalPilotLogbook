@@ -47,6 +47,7 @@
 <span class="text-xl font-bold tracking-tight text-[#111418] dark:text-white">Digital Pilot Logbook</span>
 </div>
 <nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#compare">Compare</a>
 <a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#how-it-works">How it Works</a>
 <a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#import-source">Excel Pilot Logbook</a>
 <a class="text-sm font-medium text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#features">Features</a>
@@ -125,6 +126,312 @@
 </div>
 </div>
 </section>
+<!-- Comparison Section -->
+<section class="py-20 bg-slate-light dark:bg-slate-dark/50 border-y border-gray-100 dark:border-gray-800" id="compare">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-12">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 w-fit mx-auto mb-6">
+<span class="text-xs font-bold text-primary uppercase tracking-wide">Feature Comparison</span>
+</div>
+<h2 class="text-3xl font-bold text-[#111418] dark:text-white sm:text-4xl mb-4">See how we compare</h2>
+<p class="text-lg text-gray-600 dark:text-gray-300">Compare Digital Pilot Logbook with other popular pilot logbook solutions</p>
+</div>
+
+<!-- Category Filter Tabs -->
+<div class="flex flex-wrap justify-center gap-2 mb-8" id="compare-tabs">
+<button onclick="filterCategory('all')" class="compare-tab active px-4 py-2 rounded-lg text-sm font-medium transition-all bg-primary text-white" data-category="all">All Features</button>
+<button onclick="filterCategory('pricing')" class="compare-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-category="pricing">Pricing</button>
+<button onclick="filterCategory('platform')" class="compare-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-category="platform">Platform Support</button>
+<button onclick="filterCategory('flight')" class="compare-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-category="flight">Flight Tracking</button>
+<button onclick="filterCategory('data')" class="compare-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-category="data">Data Management</button>
+<button onclick="filterCategory('logbook')" class="compare-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" data-category="logbook">Logbook Features</button>
+</div>
+
+<!-- Comparison Table -->
+<div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg">
+<table class="w-full text-sm" id="comparison-table">
+<thead>
+<tr class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+<th class="sticky left-0 z-10 bg-gray-50 dark:bg-gray-900 px-4 py-4 text-left font-semibold text-gray-900 dark:text-white min-w-[180px]">Feature</th>
+<th class="px-4 py-4 text-center font-semibold min-w-[120px]">
+<div class="flex flex-col items-center gap-1">
+<span class="text-primary">Digital Pilot</span>
+<span class="text-xs text-green-600 font-bold bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">Our Solution</span>
+</div>
+</th>
+<th class="px-4 py-4 text-center font-semibold text-gray-600 dark:text-gray-300 min-w-[120px]">LogTen Pro</th>
+<th class="px-4 py-4 text-center font-semibold text-gray-600 dark:text-gray-300 min-w-[120px]">MyFlightbook</th>
+<th class="px-4 py-4 text-center font-semibold text-gray-600 dark:text-gray-300 min-w-[120px]">Safelog</th>
+<th class="px-4 py-4 text-center font-semibold text-gray-600 dark:text-gray-300 min-w-[120px]">CrewLounge</th>
+<th class="px-4 py-4 text-center font-semibold text-gray-600 dark:text-gray-300 min-w-[120px]">Excel Logbook</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+<!-- PRICING Section -->
+<tr class="compare-row" data-category="pricing">
+<td colspan="7" class="sticky left-0 z-10 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 font-bold text-primary uppercase tracking-wide text-xs">Pricing</td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="pricing">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Pricing Model</td>
+<td class="px-4 py-3 text-center"><span class="text-gray-700 dark:text-gray-300">Free + Premium</span></td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">$129.99/year</td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">Free (basic)</td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">$79.95/year</td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">€49.99/year</td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">$45 lifetime</td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="pricing">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Free Tier</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="pricing">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">40-Year Lifetime Cost</td>
+<td class="px-4 py-3 text-center"><span class="font-bold text-green-600">Variable</span></td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">$5,199.60</td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">Variable</td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">$3,198</td>
+<td class="px-4 py-3 text-center text-gray-600 dark:text-gray-400">€1,999.60</td>
+<td class="px-4 py-3 text-center font-bold text-green-600">$45</td>
+</tr>
+
+<!-- PLATFORM SUPPORT Section -->
+<tr class="compare-row" data-category="platform">
+<td colspan="7" class="sticky left-0 z-10 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 font-bold text-primary uppercase tracking-wide text-xs">Platform Support</td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="platform">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">iOS</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Web-based</span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Google Sheets</span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="platform">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Android</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Web-based</span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Google Sheets</span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="platform">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Web Access</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="platform">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Windows/macOS Desktop</td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Web-based</span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">macOS only</span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Web-based</span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+</tr>
+
+<!-- FLIGHT TRACKING Section -->
+<tr class="compare-row" data-category="flight">
+<td colspan="7" class="sticky left-0 z-10 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 font-bold text-primary uppercase tracking-wide text-xs">Flight Tracking</td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="flight">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Real-Time Tracking</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="flight">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Automatic Flight Logging</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="flight">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Flight Search & Import</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500"><span class="material-symbols-outlined text-sm">close</span></span></td>
+</tr>
+
+<!-- DATA MANAGEMENT Section -->
+<tr class="compare-row" data-category="data">
+<td colspan="7" class="sticky left-0 z-10 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 font-bold text-primary uppercase tracking-wide text-xs">Data Management</td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="data">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Cloud Sync</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Google Drive</span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="data">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Export PDF</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="data">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Export CSV/Excel</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="data">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">100% Data Ownership</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+</tr>
+
+<!-- LOGBOOK FEATURES Section -->
+<tr class="compare-row" data-category="logbook">
+<td colspan="7" class="sticky left-0 z-10 bg-blue-50 dark:bg-blue-900/20 px-4 py-3 font-bold text-primary uppercase tracking-wide text-xs">Logbook Features</td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="logbook">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Unlimited Entries</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="logbook">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Automatic Calculations</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="logbook">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">IFR Currency Tracking</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">6-6-6 currency</span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="logbook">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Custom Fields</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Extensive</span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Unlimited</span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="logbook">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">TCCA/EASA Compliant</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Custom templates</span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Custom templates</span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Custom templates</span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Varies</span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Custom templates</span></td>
+</tr>
+<tr class="compare-row hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" data-category="logbook">
+<td class="sticky left-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 font-medium text-gray-900 dark:text-white">Digital Signatures</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600"><span class="material-symbols-outlined text-sm">check</span></span></td>
+<td class="px-4 py-3 text-center"><span class="text-xs text-gray-500">Workaround</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- Quick Summary Cards -->
+<div class="grid md:grid-cols-3 gap-6 mt-12">
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined">savings</span>
+</div>
+<h3 class="font-bold text-[#111418] dark:text-white">Best Value</h3>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-400">Free tier available with premium features. Compare to LogTen Pro's $5,199.60 over 40 years.</p>
+</div>
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600">
+<span class="material-symbols-outlined">devices</span>
+</div>
+<h3 class="font-bold text-[#111418] dark:text-white">Cross-Platform</h3>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-400">Works on iOS, Android, and any web browser. Unlike LogTen Pro (no Android) or Safelog (no Android).</p>
+</div>
+<div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<h3 class="font-bold text-[#111418] dark:text-white">Modern & Fast</h3>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-400">Real-time tracking and automatic flight logging. Most competitors require 100% manual entry.</p>
+</div>
+</div>
+</div>
+</section>
+
+<script>
+function filterCategory(category) {
+    // Update active tab styling
+    document.querySelectorAll('.compare-tab').forEach(tab => {
+        tab.classList.remove('bg-primary', 'text-white');
+        tab.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-300');
+    });
+    const activeTab = document.querySelector(`[data-category="${category}"]`);
+    if (activeTab) {
+        activeTab.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-300');
+        activeTab.classList.add('bg-primary', 'text-white');
+    }
+
+    // Filter rows
+    document.querySelectorAll('.compare-row').forEach(row => {
+        if (category === 'all' || row.dataset.category === category) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
+
 <section class="py-20 bg-white dark:bg-background-dark border-y border-gray-100 dark:border-gray-800 overflow-hidden" id="import-source">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex flex-col lg:flex-row items-center gap-16">
