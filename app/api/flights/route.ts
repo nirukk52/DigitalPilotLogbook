@@ -1,11 +1,12 @@
 /**
  * API route for creating individual flights via quick entry
- * POST /api/flights - Creates a single flight with calculated buckets
+ * POST /api/flights - Creates a single flight with calculated buckets for the current session user
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { insertFlight } from "@/lib/db/queries";
 import { buildCalculatedFlight } from "@/lib/flights/calculation-engine";
+import { getSessionUserId } from "@/lib/session";
 import type { FlightRole, FlightTag } from "@/lib/flights/types";
 
 interface CreateFlightRequest {
@@ -21,6 +22,15 @@ interface CreateFlightRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    // Get user ID from session cookie
+    const userId = await getSessionUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: "No session found" },
+        { status: 401 }
+      );
+    }
+
     const body: CreateFlightRequest = await request.json();
     
     // Validate required fields
@@ -68,7 +78,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Insert single flight (not replace all)
-    const saved = await insertFlight(flightData, "default");
+    const saved = await insertFlight(flightData, userId);
 
     return NextResponse.json({
       success: true,

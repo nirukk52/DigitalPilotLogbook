@@ -152,7 +152,14 @@ export async function GET() {
       pilotName,
     };
 
-    return NextResponse.json(response);
+    // Return with no-cache headers to ensure fresh data
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    });
   } catch (error) {
     console.error("Portfolio stats error:", error);
     return NextResponse.json(

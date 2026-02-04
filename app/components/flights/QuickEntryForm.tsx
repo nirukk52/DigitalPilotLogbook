@@ -212,7 +212,7 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
   if (isLoadingDefaults) {
     return (
       <div className="flex items-center justify-center py-12">
-        <svg className="w-8 h-8 animate-spin text-purple-500" fill="none" viewBox="0 0 24 24">
+        <svg className="w-8 h-8 animate-spin text-[#137fec]" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
         </svg>
@@ -236,12 +236,12 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Date */}
         <div>
-          <label className="block text-white/60 text-sm mb-1">Date</label>
+          <label className="block text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">Date</label>
           <input
             type="date"
             value={flightDate}
             onChange={(e) => setFlightDate(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500"
+            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#137fec] focus:border-transparent"
             required
           />
         </div>
@@ -265,14 +265,14 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
 
         {/* Role */}
         <div>
-          <label className="block text-white/60 text-sm mb-1">Role</label>
+          <label className="block text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">Role</label>
           <select
             value={role}
             onChange={(e) => setRole(e.target.value as FlightRole)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-500"
+            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#137fec] focus:border-transparent"
           >
             {ROLES.map(r => (
-              <option key={r} value={r} className="bg-[#1a1a2e]">{r}</option>
+              <option key={r} value={r} className="bg-white dark:bg-gray-700">{r}</option>
             ))}
           </select>
         </div>
@@ -282,19 +282,19 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Route */}
         <div>
-          <label className="block text-white/60 text-sm mb-1">Route</label>
+          <label className="block text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">Route</label>
           <input
             type="text"
             value={route}
             onChange={(e) => setRoute(e.target.value.toUpperCase())}
             placeholder="CZBB-CYCW-CZBB"
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/30 focus:outline-none focus:border-purple-500"
+            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#137fec] focus:border-transparent"
           />
         </div>
 
         {/* Flight Time */}
         <div>
-          <label className="block text-white/60 text-sm mb-1">Flight Time (hours)</label>
+          <label className="block text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">Flight Time (hours)</label>
           <input
             type="number"
             value={flightTime}
@@ -302,7 +302,7 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
             placeholder="1.5"
             step="0.1"
             min="0.1"
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/30 focus:outline-none focus:border-purple-500"
+            className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#137fec] focus:border-transparent"
             required
           />
         </div>
@@ -310,7 +310,7 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
 
       {/* Row 3: Tags */}
       <div>
-        <label className="block text-white/60 text-sm mb-2">Tags</label>
+        <label className="block text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">Tags</label>
         <div className="flex flex-wrap gap-2">
           {TAGS.map(tag => (
             <button
@@ -318,10 +318,10 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
               type="button"
               onClick={() => toggleTag(tag)}
               className={`
-                px-3 py-1 rounded-full text-sm transition-colors
+                px-3 py-1.5 rounded-full text-sm font-medium transition-colors
                 ${selectedTags.includes(tag)
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-white/5 text-white/60 hover:bg-white/10'}
+                  ? 'bg-[#137fec] text-white'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}
               `}
             >
               {tag}
@@ -332,13 +332,13 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
 
       {/* Row 4: Remarks */}
       <div>
-        <label className="block text-white/60 text-sm mb-1">Remarks (optional)</label>
+        <label className="block text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">Remarks (optional)</label>
         <input
           type="text"
           value={remarks}
           onChange={(e) => setRemarks(e.target.value)}
           placeholder="Training notes..."
-          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/30 focus:outline-none focus:border-purple-500"
+          className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#137fec] focus:border-transparent"
         />
       </div>
 
@@ -352,7 +352,7 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
         <button
           type="button"
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="text-sm text-white/40 hover:text-white/60 transition-colors flex items-center gap-1"
+          className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors flex items-center gap-1"
         >
           <svg 
             className={`w-4 h-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} 
@@ -365,12 +365,12 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
           {showAdvanced ? 'Hide Advanced' : 'Advanced Mode'}
         </button>
         {showAdvanced && (
-          <span className="text-xs text-white/30">Manual bucket overrides</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">Manual bucket overrides</span>
         )}
       </div>
 
       {/* Advanced Bucket Editor */}
-      {showAdvanced && calculatedBuckets && (
+      {showAdvanced && (
         <AdvancedBucketEditor
           buckets={calculatedBuckets}
           overrides={manualOverrides}
@@ -381,17 +381,17 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
 
       {/* Error Display */}
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-          <p className="text-red-400 text-sm">{error}</p>
+        <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 rounded-lg">
+          <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
         </div>
       )}
 
       {/* Action Buttons */}
-      <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+      <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-white/60 hover:text-white transition-colors"
+          className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
           disabled={isSubmitting}
         >
           Cancel
@@ -399,7 +399,7 @@ export function QuickEntryForm({ onSave, onCancel, flightId, initialData }: Quic
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
+          className="px-6 py-2 bg-[#137fec] hover:bg-blue-600 text-white font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
         >
           {isSubmitting ? (
             <>

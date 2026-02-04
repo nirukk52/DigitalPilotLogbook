@@ -1,15 +1,25 @@
 /**
  * API route for listing flights
- * GET /api/flights/list - Returns paginated list of flights
+ * GET /api/flights/list - Returns paginated list of flights for the current session user
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { flights } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { getSessionUserId } from "@/lib/session";
 
 export async function GET(request: NextRequest) {
   try {
+    // Get user ID from session cookie
+    const userId = await getSessionUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: "No session found", flights: [] },
+        { status: 401 }
+      );
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     const offset = parseInt(searchParams.get("offset") || "0", 10);
@@ -18,7 +28,7 @@ export async function GET(request: NextRequest) {
     const result = await db
       .select()
       .from(flights)
-      .where(eq(flights.userId, "default"))
+      .where(eq(flights.userId, userId))
       .orderBy(desc(flights.flightDate), desc(flights.createdAt))
       .limit(limit)
       .offset(offset);

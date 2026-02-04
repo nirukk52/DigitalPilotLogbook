@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getFlightById, updateFlight, deleteFlight } from "@/lib/db/queries";
 import { buildCalculatedFlight } from "@/lib/flights/calculation-engine";
+import { getSessionUserId } from "@/lib/session";
 import type { FlightRole, FlightTag } from "@/lib/flights/types";
 
 interface UpdateFlightRequest {
@@ -26,6 +27,15 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Get user ID from session cookie
+    const userId = await getSessionUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: "No session found" },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const flightId = parseInt(id, 10);
     
@@ -36,7 +46,7 @@ export async function GET(
       );
     }
 
-    const flight = await getFlightById(flightId, "default");
+    const flight = await getFlightById(flightId, userId);
     
     if (!flight) {
       return NextResponse.json(
@@ -66,6 +76,15 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Get user ID from session cookie
+    const userId = await getSessionUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: "No session found" },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const flightId = parseInt(id, 10);
     
@@ -105,7 +124,7 @@ export async function PUT(
     }
 
     // Check flight exists
-    const existing = await getFlightById(flightId, "default");
+    const existing = await getFlightById(flightId, userId);
     if (!existing) {
       return NextResponse.json(
         { success: false, error: "Flight not found" },
@@ -131,7 +150,7 @@ export async function PUT(
       flightDate: body.flightDate,
     };
 
-    const updated = await updateFlight(flightId, flightData, "default");
+    const updated = await updateFlight(flightId, flightData, userId);
 
     return NextResponse.json({
       success: true,
@@ -161,6 +180,15 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Get user ID from session cookie
+    const userId = await getSessionUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: "No session found" },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const flightId = parseInt(id, 10);
     
@@ -172,7 +200,7 @@ export async function DELETE(
     }
 
     // Check flight exists
-    const existing = await getFlightById(flightId, "default");
+    const existing = await getFlightById(flightId, userId);
     if (!existing) {
       return NextResponse.json(
         { success: false, error: "Flight not found" },
@@ -180,7 +208,7 @@ export async function DELETE(
       );
     }
 
-    await deleteFlight(flightId, "default");
+    await deleteFlight(flightId, userId);
 
     return NextResponse.json({
       success: true,

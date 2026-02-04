@@ -66,7 +66,7 @@ export function AircraftAutocomplete({
 
   return (
     <div className="relative">
-      <label className="block text-white/60 text-sm mb-1">{label}</label>
+      <label className="block text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">{label}</label>
       <input
         ref={inputRef}
         type="text"
@@ -74,7 +74,7 @@ export function AircraftAutocomplete({
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setIsOpen(true)}
         placeholder={placeholder}
-        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/30 focus:outline-none focus:border-purple-500"
+        className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#137fec] focus:border-transparent"
         required={required}
         autoComplete="off"
       />
@@ -83,14 +83,14 @@ export function AircraftAutocomplete({
       {isOpen && filteredOptions.length > 0 && (
         <div
           ref={dropdownRef}
-          className="absolute z-50 w-full mt-1 bg-[#1a1a2e] border border-white/10 rounded-lg shadow-lg max-h-48 overflow-y-auto"
+          className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"
         >
           {filteredOptions.map((option) => (
             <button
               key={option}
               type="button"
               onClick={() => handleSelect(option)}
-              className="w-full px-3 py-2 text-left text-white hover:bg-white/10 transition-colors"
+              className="w-full px-3 py-2 text-left text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               {option}
             </button>

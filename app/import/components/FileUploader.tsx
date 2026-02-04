@@ -5,6 +5,7 @@ import { useState, useCallback, useRef } from "react";
 /**
  * FileUploader component - drag-and-drop upload zone for Excel files
  * Validates file type (.xlsx only) and file size (< 10MB)
+ * Uses modern landing page design patterns with light/dark mode support
  */
 
 interface FileUploaderProps {
@@ -86,20 +87,21 @@ export function FileUploader({ onFileSelect, isLoading, error }: FileUploaderPro
   const displayError = validationError || error;
 
   return (
-    <div className="w-full max-w-lg mx-auto">
+    <div className="w-full max-w-xl mx-auto">
+      {/* Upload Card */}
       <div
         onClick={!isLoading ? handleClick : undefined}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={!isLoading ? handleDrop : undefined}
         className={`
-          relative border-2 border-dashed rounded-xl p-8
-          transition-all duration-200 cursor-pointer
+          relative p-8 sm:p-12 rounded-2xl transition-all duration-200 cursor-pointer
+          bg-white dark:bg-gray-800 border-2 border-dashed
           ${isDragging
-            ? "border-purple-500 bg-purple-500/10"
-            : "border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10"
+            ? "border-[#137fec] bg-blue-50 dark:bg-blue-900/20 shadow-lg shadow-[#137fec]/10"
+            : "border-gray-200 dark:border-gray-700 hover:border-[#137fec] dark:hover:border-[#137fec] hover:shadow-lg"
           }
-          ${isLoading ? "cursor-not-allowed opacity-60" : ""}
+          ${isLoading ? "cursor-not-allowed opacity-60" : "group"}
         `}
       >
         <input
@@ -111,17 +113,36 @@ export function FileUploader({ onFileSelect, isLoading, error }: FileUploaderPro
           disabled={isLoading}
         />
         
-        <div className="flex flex-col items-center gap-4 text-center">
+        <div className="flex flex-col items-center gap-6 text-center">
           {isLoading ? (
             <>
-              <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin" />
-              <p className="text-white/80">Processing file...</p>
+              <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <svg className="w-8 h-8 text-[#137fec] animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">Processing file...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">This may take a few seconds</p>
+              </div>
             </>
           ) : (
             <>
-              <div className="w-16 h-16 rounded-full bg-purple-600/20 flex items-center justify-center">
+              {/* Icon with animation on hover */}
+              <div className={`
+                w-20 h-20 rounded-2xl flex items-center justify-center transition-all
+                ${isDragging 
+                  ? "bg-[#137fec] scale-110" 
+                  : "bg-blue-100 dark:bg-blue-900/30 group-hover:scale-110 group-hover:bg-[#137fec]"
+                }
+              `}>
                 <svg
-                  className="w-8 h-8 text-purple-400"
+                  className={`w-10 h-10 transition-colors ${
+                    isDragging 
+                      ? "text-white" 
+                      : "text-[#137fec] group-hover:text-white"
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -135,36 +156,52 @@ export function FileUploader({ onFileSelect, isLoading, error }: FileUploaderPro
                 </svg>
               </div>
               
+              {/* Text Content */}
               <div>
-                <p className="text-white font-medium">
+                <p className="text-xl font-bold text-gray-900 dark:text-white">
                   {isDragging ? "Drop your file here" : "Drag and drop your Excel file"}
                 </p>
-                <p className="text-white/60 text-sm mt-1">
-                  or click to browse
+                <p className="text-gray-500 dark:text-gray-400 mt-2">
+                  or <span className="text-[#137fec] font-medium hover:underline">browse</span> to choose a file
                 </p>
               </div>
               
-              <p className="text-white/40 text-xs">
-                Supports .xlsx files up to 10MB
-              </p>
+              {/* File Type Info */}
+              <div className="flex items-center gap-4 pt-4 border-t border-gray-100 dark:border-gray-700 w-full justify-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-gray-600 dark:text-gray-300">.xlsx files</span>
+                </div>
+                <div className="w-px h-4 bg-gray-200 dark:bg-gray-700" />
+                <span className="text-sm text-gray-500 dark:text-gray-400">Max 10MB</span>
+              </div>
             </>
           )}
         </div>
       </div>
       
+      {/* Error Message */}
       {displayError && (
-        <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-          <p className="text-red-400 text-sm flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            {displayError}
-          </p>
+        <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 rounded-xl">
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 shrink-0">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p className="text-sm font-medium text-red-700 dark:text-red-400">
+              {displayError}
+            </p>
+          </div>
         </div>
       )}
     </div>
