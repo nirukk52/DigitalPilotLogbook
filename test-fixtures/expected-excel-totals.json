@@ -1,0 +1,356 @@
+{
+  "generatedAt": "2026-02-08T01:19:13.158Z",
+  "sourceFile": "Excel Log Canada.xlsx",
+  "totals": {
+    "totalFlights": 869,
+    "totalAircraftFlights": 839,
+    "totalHours": 1163.4,
+    "seDayDual": 140.2,
+    "seDayPic": 955.5,
+    "seDayCopilot": 0,
+    "seNightDual": 7.6,
+    "seNightPic": 35.2,
+    "seNightCopilot": 0,
+    "meDayDual": 24,
+    "meDayPic": 0,
+    "meDayCopilot": 0,
+    "meNightDual": 0.9,
+    "meNightPic": 0,
+    "meNightCopilot": 0,
+    "xcDayDual": 11.1,
+    "xcDayPic": 97.3,
+    "xcDayCopilot": 0,
+    "xcNightDual": 2,
+    "xcNightPic": 18.6,
+    "xcNightCopilot": 0,
+    "actualImc": 3.6,
+    "hood": 24.8,
+    "simulator": 31.8,
+    "asFlightInstructor": 869.1,
+    "dualReceived": 0,
+    "dayTakeoffsLandings": 195,
+    "nightTakeoffsLandings": 20,
+    "ifrApproaches": 34,
+    "holding": 8,
+    "seDayTotal": 1095.7,
+    "seNightTotal": 42.8,
+    "meDayTotal": 24,
+    "meNightTotal": 0.9,
+    "xcDayTotal": 108.4,
+    "xcNightTotal": 20.6,
+    "totalPic": 990.7,
+    "totalDual": 172.7
+  },
+  "aircraftBreakdown": [
+    {
+      "makeModel": "C172",
+      "flights": 460,
+      "totalHours": 639.4,
+      "seDayDual": 140.2,
+      "seDayPic": 472.4,
+      "seNightPic": 20.2,
+      "xcDayPic": 74.2,
+      "dayTL": 114,
+      "nightTL": 7,
+      "actualImc": 1.1,
+      "hood": 15.1,
+      "simulator": 0,
+      "asInstructor": 383.4,
+      "dualReceived": 0
+    },
+    {
+      "makeModel": "C152",
+      "flights": 359,
+      "totalHours": 499.1,
+      "seDayDual": 0,
+      "seDayPic": 483.1,
+      "seNightPic": 15,
+      "xcDayPic": 23.1,
+      "dayTL": 75,
+      "nightTL": 13,
+      "actualImc": 0,
+      "hood": 0,
+      "simulator": 0,
+      "asInstructor": 485.7,
+      "dualReceived": 0
+    },
+    {
+      "makeModel": "PA44",
+      "flights": 18,
+      "totalHours": 22.9,
+      "seDayDual": 0,
+      "seDayPic": 0,
+      "seNightPic": 0,
+      "xcDayPic": 0,
+      "dayTL": 6,
+      "nightTL": 0,
+      "actualImc": 2.5,
+      "hood": 9.7,
+      "simulator": 0,
+      "asInstructor": 0,
+      "dualReceived": 0
+    },
+    {
+      "makeModel": "PA34",
+      "flights": 2,
+      "totalHours": 2,
+      "seDayDual": 0,
+      "seDayPic": 0,
+      "seNightPic": 0,
+      "xcDayPic": 0,
+      "dayTL": 0,
+      "nightTL": 0,
+      "actualImc": 0,
+      "hood": 0,
+      "simulator": 0,
+      "asInstructor": 0,
+      "dualReceived": 0
+    },
+    {
+      "makeModel": "Redbird FMX",
+      "flights": 16,
+      "totalHours": 0,
+      "seDayDual": 0,
+      "seDayPic": 0,
+      "seNightPic": 0,
+      "xcDayPic": 0,
+      "dayTL": 0,
+      "nightTL": 0,
+      "actualImc": 0,
+      "hood": 0,
+      "simulator": 18.1,
+      "asInstructor": 0,
+      "dualReceived": 0
+    },
+    {
+      "makeModel": "ALSIM ALX",
+      "flights": 2,
+      "totalHours": 0,
+      "seDayDual": 0,
+      "seDayPic": 0,
+      "seNightPic": 0,
+      "xcDayPic": 0,
+      "dayTL": 0,
+      "nightTL": 0,
+      "actualImc": 0,
+      "hood": 0,
+      "simulator": 2.2,
+      "asInstructor": 0,
+      "dualReceived": 0
+    },
+    {
+      "makeModel": "Redbird FMX \n0078",
+      "flights": 3,
+      "totalHours": 0,
+      "seDayDual": 0,
+      "seDayPic": 0,
+      "seNightPic": 0,
+      "xcDayPic": 0,
+      "dayTL": 0,
+      "nightTL": 0,
+      "actualImc": 0,
+      "hood": 0,
+      "simulator": 2.5,
+      "asInstructor": 0,
+      "dualReceived": 0
+    },
+    {
+      "makeModel": "AL250",
+      "flights": 9,
+      "totalHours": 0,
+      "seDayDual": 0,
+      "seDayPic": 0,
+      "seNightPic": 0,
+      "xcDayPic": 0,
+      "dayTL": 0,
+      "nightTL": 0,
+      "actualImc": 0,
+      "hood": 0,
+      "simulator": 9,
+      "asInstructor": 0,
+      "dualReceived": 0
+    }
+  ],
+  "simulatorOnlyFlights": [
+    {
+      "row": 44,
+      "date": "Wed Nov 17 2021 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 0.5
+    },
+    {
+      "row": 86,
+      "date": "Sat May 21 2022 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.7
+    },
+    {
+      "row": 101,
+      "date": "Mon Aug 22 2022 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 0.8
+    },
+    {
+      "row": 102,
+      "date": "Sun Aug 28 2022 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1
+    },
+    {
+      "row": 120,
+      "date": "Sun Oct 30 2022 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.1
+    },
+    {
+      "row": 130,
+      "date": "Tue Nov 22 2022 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1
+    },
+    {
+      "row": 148,
+      "date": "Tue Feb 21 2023 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "ALSIM ALX",
+      "simHours": 0.9
+    },
+    {
+      "row": 149,
+      "date": "Thu Feb 23 2023 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "ALSIM ALX",
+      "simHours": 1.3
+    },
+    {
+      "row": 159,
+      "date": "Tue May 09 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 0.9
+    },
+    {
+      "row": 160,
+      "date": "Wed May 10 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.1
+    },
+    {
+      "row": 161,
+      "date": "Tue May 30 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1
+    },
+    {
+      "row": 162,
+      "date": "Wed May 31 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 0.9
+    },
+    {
+      "row": 187,
+      "date": "Thu Sep 07 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX \n0078",
+      "simHours": 0.8
+    },
+    {
+      "row": 189,
+      "date": "Tue Sep 12 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX \n0078",
+      "simHours": 0.7
+    },
+    {
+      "row": 191,
+      "date": "Thu Sep 14 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "Redbird FMX \n0078",
+      "simHours": 1
+    },
+    {
+      "row": 193,
+      "date": "Mon Oct 02 2023 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "AL250",
+      "simHours": 0.7
+    },
+    {
+      "row": 522,
+      "date": "Fri Nov 29 2024 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.3
+    },
+    {
+      "row": 523,
+      "date": "Sat Nov 30 2024 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.2
+    },
+    {
+      "row": 524,
+      "date": "Sun Dec 01 2024 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.5
+    },
+    {
+      "row": 529,
+      "date": "Wed Dec 04 2024 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.5
+    },
+    {
+      "row": 530,
+      "date": "Thu Dec 05 2024 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.5
+    },
+    {
+      "row": 532,
+      "date": "Tue Dec 10 2024 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "Redbird FMX",
+      "simHours": 1.1
+    },
+    {
+      "row": 546,
+      "date": "Wed Jan 08 2025 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "AL250",
+      "simHours": 1.6
+    },
+    {
+      "row": 575,
+      "date": "Fri Jan 31 2025 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "AL250",
+      "simHours": 1.1
+    },
+    {
+      "row": 589,
+      "date": "Fri Feb 21 2025 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "AL250",
+      "simHours": 1.2
+    },
+    {
+      "row": 711,
+      "date": "Sun Jun 29 2025 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "AL250",
+      "simHours": 0.5
+    },
+    {
+      "row": 805,
+      "date": "Fri Sep 26 2025 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "AL250",
+      "simHours": 0.9
+    },
+    {
+      "row": 832,
+      "date": "Mon Oct 27 2025 00:00:00 GMT-0500 (Central Daylight Time)",
+      "makeModel": "AL250",
+      "simHours": 1
+    },
+    {
+      "row": 856,
+      "date": "Sun Nov 30 2025 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "AL250",
+      "simHours": 1
+    },
+    {
+      "row": 866,
+      "date": "Tue Dec 23 2025 00:00:00 GMT-0600 (Central Standard Time)",
+      "makeModel": "AL250",
+      "simHours": 1
+    }
+  ]
+}

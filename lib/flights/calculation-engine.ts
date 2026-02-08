@@ -269,27 +269,33 @@ export function calculateBuckets(
 }
 
 /**
- * Calculates total flight hours from time bucket values
- * Note: XC, IMC are qualifiers and NOT added to total
+ * Calculates total AIRCRAFT flight hours from time bucket values
+ * 
+ * IMPORTANT: Per TCCA/FAA/EASA standards:
+ * - Simulator time is NOT included in total flight hours
+ * - XC, IMC, hood are qualifiers (subsets of primary time, not additive)
+ * - Instructor, dualReceived are role-based (not additive)
+ * 
+ * Total Hours = SE + ME time only
  */
 export function calculateFlightHoursFromBuckets(buckets: TimeBuckets): number {
   const values = [
-    // Single-engine (primary time)
+    // Single-engine (aircraft time)
     buckets.seDayDual,
     buckets.seDayPic,
     buckets.seDayCopilot,
     buckets.seNightDual,
     buckets.seNightPic,
     buckets.seNightCopilot,
-    // Multi-engine (primary time)
+    // Multi-engine (aircraft time)
     buckets.meDayDual,
     buckets.meDayPic,
     buckets.meDayCopilot,
     buckets.meNightDual,
     buckets.meNightPic,
     buckets.meNightCopilot,
-    // Simulator (additive when sim-only flight)
-    buckets.simulator,
+    // NOTE: Simulator is intentionally EXCLUDED from total flight hours
+    // It is tracked separately per aviation standards
   ];
   
   // Note: XC, IMC, hood, instructor, dualReceived are NOT added

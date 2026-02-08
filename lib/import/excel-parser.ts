@@ -75,6 +75,16 @@ function mapRowToFlight(row: ExcelRow, rowNumber: number): ParsedFlight | null {
     return null;
   }
   
+  // Skip header rows that got parsed (e.g., "MAKE / MODEL" in column 1)
+  const makeModel = parseString(row[1]);
+  if (makeModel && (
+    makeModel.toUpperCase().includes("MAKE") ||
+    makeModel.toUpperCase().includes("MODEL") ||
+    makeModel.toUpperCase() === "TYPE"
+  )) {
+    return null;
+  }
+  
   // Initialize flight with defaults
   const flight: ParsedFlight = {
     rowNumber,
@@ -233,26 +243,30 @@ function parseInteger(value: unknown): number | null {
 }
 
 /**
- * Calculate total flight hours from time bucket fields
+ * Calculate total AIRCRAFT flight hours from time bucket fields
+ * 
+ * IMPORTANT: Per TCCA/FAA/EASA standards, simulator time is NOT included
+ * in total flight hours. Simulator is tracked separately.
+ * Total Hours = SE + ME time only (no simulator)
  */
 function calculateFlightHours(flight: ParsedFlight): number {
   const values = [
-    // Single-engine
+    // Single-engine (aircraft time)
     flight.seDayDual,
     flight.seDayPic,
     flight.seDayCopilot,
     flight.seNightDual,
     flight.seNightPic,
     flight.seNightCopilot,
-    // Multi-engine
+    // Multi-engine (aircraft time)
     flight.meDayDual,
     flight.meDayPic,
     flight.meDayCopilot,
     flight.meNightDual,
     flight.meNightPic,
     flight.meNightCopilot,
-    // Simulator (additive when sim-only flight)
-    flight.simulator,
+    // NOTE: Simulator is intentionally EXCLUDED from total flight hours
+    // It is tracked separately in the simulator column
   ];
   
   const total = values.reduce<number>((sum, val) => sum + (val ?? 0), 0);

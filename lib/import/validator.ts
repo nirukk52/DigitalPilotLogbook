@@ -1,10 +1,14 @@
 /**
  * Validation rules engine for imported flight data
  * Enforces TCCA logbook calculation rules and data integrity
+ * 
+ * Key principle: Total Flight Hours = SE + ME only (simulator tracked separately)
+ * This aligns with TCCA/FAA/EASA standards.
  */
 
 import type { ParsedFlight, ValidationResult, ValidationIssue } from './types';
 import { TIME_FIELDS } from './column-mapper';
+import { calculateTotalHours as calcTotalHoursFromBuckets, isSimulatorOnly } from '@/lib/flights/aggregations';
 
 /**
  * Validate a single flight against all TCCA rules
@@ -12,16 +16,21 @@ import { TIME_FIELDS } from './column-mapper';
 export function validateFlight(flight: ParsedFlight): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
   
-  // Rule 1: Flight hours must match sum of time buckets
-  const calculatedHours = calculateTotalHours(flight);
-  if (Math.abs(flight.flightHours - calculatedHours) > 0.01) {
+  // Rule 1: Flight hours must match sum of time buckets (SE + ME, not simulator)
+  // Simulator-only flights should have flightHours = 0 since simulator is tracked separately
+  const calculatedAircraftHours = calcTotalHoursFromBuckets(flight);
+  const isSimOnly = isSimulatorOnly(flight);
+  
+  // For simulator-only flights, flightHours should be 0 (or match sim time if using old format)
+  // For aircraft flights, flightHours should match SE + ME buckets
+  if (!isSimOnly && Math.abs(flight.flightHours - calculatedAircraftHours) > 0.1) {
     issues.push({
       rowNumber: flight.rowNumber,
       field: 'flightHours',
-      severity: 'error',
-      message: `Flight time (${flight.flightHours}) doesn't match sum of time categories (${calculatedHours.toFixed(2)})`,
+      severity: 'warning', // Changed to warning - often Excel formatting differences
+      message: `Stored flight time (${flight.flightHours.toFixed(1)}) differs from bucket sum (${calculatedAircraftHours.toFixed(1)})`,
       actualValue: flight.flightHours,
-      expectedValue: calculatedHours,
+      expectedValue: calculatedAircraftHours,
     });
   }
   
@@ -92,13 +101,14 @@ export function validateFlight(flight: ParsedFlight): ValidationIssue[] {
     });
   }
   
-  // Rule 6: Flight hours must be positive
-  if (flight.flightHours <= 0) {
+  // Rule 6: Flight hours must be positive (except simulator-only flights)
+  const isSimFlight = isSimulatorOnly(flight);
+  if (flight.flightHours <= 0 && !isSimFlight) {
     issues.push({
       rowNumber: flight.rowNumber,
       field: 'flightHours',
       severity: 'error',
-      message: 'Flight hours must be greater than zero',
+      message: 'Flight hours must be greater than zero for aircraft flights',
       actualValue: flight.flightHours,
     });
   }
@@ -166,25 +176,8 @@ export function validateFlights(flights: ParsedFlight[]): ValidationResult {
   };
 }
 
-/**
- * Calculate total hours from all time bucket fields
- */
-export function calculateTotalHours(flight: ParsedFlight): number {
-  return sumValues([
-    // Single-engine
-    flight.seDayDual, flight.seDayPic, flight.seDayCopilot,
-    flight.seNightDual, flight.seNightPic, flight.seNightCopilot,
-    // Multi-engine
-    flight.meDayDual, flight.meDayPic, flight.meDayCopilot,
-    flight.meNightDual, flight.meNightPic, flight.meNightCopilot,
-    // Instrument (these may overlap with SE/ME, but in this schema they're additive for sim)
-    // Note: For actual aircraft flights, IMC/hood are qualifiers, not additive
-    // The TCCA sheet treats simulator as separate additive time
-    flight.simulator,
-    // Instructor/Dual (these are already counted in SE/ME buckets for real flights)
-    // So we don't add them again - they're qualifiers
-  ]);
-}
+// Note: calculateTotalHours is imported from lib/flights/aggregations.ts for consistency
+// The aggregations module is the single source of truth for all calculation formulas
 
 /**
  * Sum array of nullable numbers

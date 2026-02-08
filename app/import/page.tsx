@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FileUploader } from "./components/FileUploader";
+import { ExcelLogbookDashboard } from "./components/ExcelLogbookDashboard";
 import { parseExcelFile } from "@/lib/import/excel-parser";
 import { validateFlights } from "@/lib/import/validator";
 import { calculatePortfolioStats, determineLogbookOwner } from "@/lib/export/portfolio-generator";
-import type { ImportJob, ParsedFlight, ValidationResult, PDFExportJob } from "@/lib/import/types";
+import type { ImportJob, ParsedFlight, ValidationResult, ValidationIssue, PDFExportJob } from "@/lib/import/types";
 
 /**
  * Import page - Excel to PDF conversion wizard
@@ -319,7 +320,10 @@ export default function ImportPage() {
             </div>
 
             {/* Validation Summary */}
-            <ValidationSummary validation={importJob.validation} />
+            <ValidationSummary validation={importJob.validation} flights={importJob.flights} />
+
+            {/* Excel Logbook Dashboard - Matching Excel format for verification */}
+            <ExcelLogbookDashboard flights={importJob.flights} />
 
             {/* Flight Preview Card */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
@@ -676,19 +680,53 @@ function StepIndicator({
 /**
  * Validation summary component - Card-based design with status indicators
  * Shows flight validation results with success/warning/error counts
+ * Expandable to show detailed issues
  */
-function ValidationSummary({ validation }: { validation: ValidationResult }) {
-  const { totalFlights, successCount, warningCount, errorCount, isValid } = validation;
+function ValidationSummary({ 
+  validation, 
+  flights,
+}: { 
+  validation: ValidationResult;
+  flights: ParsedFlight[];
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { totalFlights, successCount, warningCount, errorCount, isValid, issues } = validation;
+  
+  // Group issues by row number and get the affected flights
+  const affectedFlights = useMemo(() => {
+    const rowsWithIssues = new Set(issues.map(i => i.rowNumber));
+    return flights
+      .filter(f => rowsWithIssues.has(f.rowNumber))
+      .map(flight => ({
+        flight,
+        issues: issues.filter(i => i.rowNumber === flight.rowNumber),
+        hasErrors: issues.some(i => i.rowNumber === flight.rowNumber && i.severity === 'error'),
+        hasWarnings: issues.some(i => i.rowNumber === flight.rowNumber && i.severity === 'warning'),
+      }))
+      .sort((a, b) => {
+        // Errors first, then warnings
+        if (a.hasErrors && !b.hasErrors) return -1;
+        if (!a.hasErrors && b.hasErrors) return 1;
+        return a.flight.rowNumber - b.flight.rowNumber;
+      });
+  }, [flights, issues]);
+
+  const hasIssues = errorCount > 0 || warningCount > 0;
   
   return (
     <div
-      className={`p-6 rounded-2xl border ${
+      className={`rounded-2xl border overflow-hidden ${
         isValid 
           ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800/30" 
           : "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800/30"
       }`}
     >
-      <div className="flex items-start gap-4">
+      {/* Header - Clickable to expand */}
+      <button
+        onClick={() => hasIssues && setIsExpanded(!isExpanded)}
+        disabled={!hasIssues}
+        className={`w-full p-6 text-left flex items-start gap-4 ${hasIssues ? 'cursor-pointer hover:bg-yellow-100/50 dark:hover:bg-yellow-900/30 transition-colors' : ''}`}
+      >
         <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 ${
           isValid 
             ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400" 
@@ -737,7 +775,136 @@ function ValidationSummary({ validation }: { validation: ValidationResult }) {
             )}
           </div>
         </div>
-      </div>
+        {hasIssues && (
+          <div className="shrink-0 self-center">
+            <svg 
+              className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        )}
+      </button>
+
+      {/* Expanded Content - Flights needing attention */}
+      {isExpanded && hasIssues && (
+        <div className="border-t border-yellow-200 dark:border-yellow-800/30">
+          <div className="p-4 bg-white/50 dark:bg-slate-900/50">
+            <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              Flights Requiring Review ({affectedFlights.length})
+            </h5>
+            <div className="space-y-3 max-h-[400px] overflow-y-auto">
+              {affectedFlights.map(({ flight, issues, hasErrors }) => (
+                <div 
+                  key={flight.rowNumber}
+                  className={`rounded-xl border p-4 ${
+                    hasErrors 
+                      ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800/30'
+                      : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800/30'
+                  }`}
+                >
+                  {/* Flight Header */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+                        hasErrors 
+                          ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                          : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                      }`}>
+                        Row {flight.rowNumber}
+                      </span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        {flight.flightDate.toLocaleDateString()}
+                      </span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        {flight.aircraftMakeModel}
+                      </span>
+                      {flight.registration && (
+                        <span className="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-xs font-medium text-blue-600 dark:text-blue-400">
+                          {flight.registration}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      {flight.flightHours.toFixed(1)}h
+                    </span>
+                  </div>
+                  
+                  {/* Route info if available */}
+                  {(flight.departureAirport || flight.arrivalAirport) && (
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                      <span className="font-medium">{flight.departureAirport || '?'}</span>
+                      <span className="mx-2">→</span>
+                      <span className="font-medium">{flight.arrivalAirport || '?'}</span>
+                    </div>
+                  )}
+                  
+                  {/* Issues List */}
+                  <div className="space-y-2">
+                    {issues.map((issue, idx) => (
+                      <div 
+                        key={idx}
+                        className={`flex items-start gap-2 text-sm ${
+                          issue.severity === 'error' 
+                            ? 'text-red-700 dark:text-red-400'
+                            : 'text-yellow-700 dark:text-yellow-400'
+                        }`}
+                      >
+                        {issue.severity === 'error' ? (
+                          <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        ) : (
+                          <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01" />
+                          </svg>
+                        )}
+                        <div>
+                          <span className="font-medium">{formatFieldName(issue.field)}:</span>{' '}
+                          <span>{issue.message}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
+}
+
+/**
+ * Format field names for display (camelCase to readable)
+ */
+function formatFieldName(field: string): string {
+  const fieldNames: Record<string, string> = {
+    flightHours: 'Flight Hours',
+    flightDate: 'Date',
+    aircraftMakeModel: 'Aircraft',
+    registration: 'Registration',
+    seDayDual: 'SE Day Dual',
+    seDayPic: 'SE Day PIC',
+    seNightDual: 'SE Night Dual',
+    seNightPic: 'SE Night PIC',
+    meDayDual: 'ME Day Dual',
+    meDayPic: 'ME Day PIC',
+    meNightDual: 'ME Night Dual',
+    meNightPic: 'ME Night PIC',
+    xcDayDual: 'XC Day Dual',
+    xcDayPic: 'XC Day PIC',
+    xcNightDual: 'XC Night Dual',
+    xcNightPic: 'XC Night PIC',
+    actualImc: 'Actual IMC',
+    hood: 'Hood',
+    simulator: 'Simulator',
+    asFlightInstructor: 'As Instructor',
+    dualReceived: 'Dual Received',
+  };
+  return fieldNames[field] || field.replace(/([A-Z])/g, ' $1').trim();
 }
